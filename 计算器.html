@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .display{
+            width: 400px;
+            height: 200px;
+            background-color: #ccc;
+        }
+        .table{
+            width: 400px;
+            height: 500px;
+            text-align: center;
+            font-size: 30px;
+            border: solid rgb(215, 215, 215) 1px;
+        }
+        .table .num{
+            background-color: rgb(224, 224, 224);
+        }
+        .table .step{
+            background-color: rgb(245, 146, 51);
+            color: white;
+        }
+        .table .othor{
+            background-color: rgb(214, 214, 214);
+        }
+        .table td{
+            width: 100px;
+        }
+        .table .othor:active,.table .num:active{
+            background-color: rgb(200, 200, 200);
+        }
+        .display .line{
+            padding: 10px;
+            height: 100px;
+            box-sizing: border-box;
+            line-height: 140px;
+            text-align: right;
+            font-size: 30px;
+        }
+        .display .line#first-line{
+            letter-spacing: 12px;
+        }
+        .display .line#second-line{
+            font-size: 50px;
+            line-height: 130px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <div class="display">
+            <div class="line" id="first-line"></div>
+            <div class="line" id="second-line">0</div>
+        </div>
+        <div class="btn-wrap">
+            <table class="table">
+                <tr><td class="othor btn" id="AC">AC</td><td class="othor btn" id="reverse">+/-</td><td class="othor btn" id="percent">%</td><td class="step btn" data-value="/">/</td></tr>
+                <tr><td class="num btn" data-value="7">7</td><td class="num btn" data-value="8">8</td><td class="num btn" data-value="9">9</td><td class="step btn" data-value="*">X</td></tr>
+                <tr><td class="num btn" data-value="4">4</td><td class="num btn" data-value="5">5</td><td class="num btn" data-value="6">6</td><td class="step btn" data-value="-">-</td></tr>
+                <tr><td class="num btn" data-value="1">1</td><td class="num btn" data-value="2">2</td><td class="num btn" data-value="3">3</td><td class="step btn" data-value="+">+</td></tr>
+                <tr><td colspan="2" class="num btn" data-value="0">0</td><td class="num btn" data-value=".">.</td><td class="step btn" data-value="=">=</td></tr>
+            </table>
+        </div>
+        <script>
+            var btn =document.getElementsByClassName("btn")
+            var firstline=document.getElementById("first-line")
+            var secondline=document.getElementById("second-line")
+            var persimmon=""//式子
+            var result=""
+            var backup=""
+            var handleClick=function(value){
+                if(value==null){
+                    return
+                }else{
+                    if(value=="="){
+                        result=eval(persimmon)//把字符串当JavaScript代码执行
+                        secondline.innerHTML=result
+                        persimmon=result
+                        backup=result
+                        return
+                    }else{
+                        persimmon+=value
+                        backup=persimmon
+                    }
+                }
+                firstline.innerHTML=persimmon
+            }
+            for(var i=0;i<btn.length;i++){
+                btn[i].addEventListener("click",function(){
+                    var datavalue=this.getAttribute("data-value")
+                    handleClick(datavalue)
+                })
+            }
+            document.getElementById("AC").addEventListener("click",function(){
+                persimmon=""
+                result=""
+                firstline.innerHTML=""
+                secondline.innerHTML="0"
+            })
+            document.getElementById("percent").addEventListener("click",function(){
+                result=parseFloat(backup)/100
+                persimmon=result
+                secondline.innerHTML=result
+            })
+            document.getElementById("reverse").addEventListener("click",function(){
+                var v=parseFloat(backup)
+                console.log(v)
+                if(v>0){
+                    v="-"+v;
+                }else{
+                    v=Math.abs(v)
+                }
+                persimmon=v
+                backup=v
+                console.log(v)
+                secondline.innerHTML=v
+            })
+        </script>
+    </div>
+</body>
+</html>

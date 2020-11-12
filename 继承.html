@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .d1{
+            width: 200px;
+            height: 200px;
+            background-color: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="d1">
+
+    </div>
+    <div class="d1">
+
+    </div>
+    <script>
+        var d1 =document.getElementsByClassName("d1")
+        Array.prototype.forEach.call(d1,function(item,index){
+            console.log(item)
+        })
+
+        
+        var student=function(){
+            this.name="名字"
+            this.age="40"
+            this.study=function(){
+                console.log("study")
+            }
+        }
+        var s=new student()
+        s.study()
+        var animal=function(){
+            this.eat=function(){
+                console.log("eat")
+            }
+        }
+        var bird =function(){
+            this.fly=function(){
+                console.log("fly")
+            }
+        }
+        bird.prototype.sing=()=> console.log("嘤嘤嘤")
+        animal.prototype.sing=()=>console.log("我好像啸")
+        bird.prototype =new animal()//原型继承，bird类的原型是animal，animal的原型是Object   会重写bird的原型
+        var feiniao=new bird()
+        console.log(feiniao)
+        console.log(feiniao.hasOwnProperty("fly"))
+        console.log(feiniao.hasOwnProperty("eat"))//飞鸟是否含有eat属性，不像原型链查找
+        console.log("bird.prototype.isprototypeOf(feiniao)",animal.prototype.isPrototypeOf(feiniao))//bird是否挂在飞鸟的原型链上，向原型链查找
+        console.log("feiniao instanceof animal",feiniao instanceof animal)//飞鸟是否是animal的实例
+        console.log(Object.prototype.constructor===Object,'构造函数的原型是一个属性也是一个对象，这个对象里面的constructor指向构造函数本身')
+        //手写instanceof
+        //prototype 显示原型 __proto__ 隐式原型
+        function instance(child,parent){
+            var proto=child.__proto__
+            while(true){
+                if(!proto){
+                    return false
+                }else if(proto ===parent.prototype){
+                    console.log(proto,parent.prototype,'child的proto和parent的prototype')
+                    return true
+                }
+                proto=proto.__proto__
+
+            }
+
+        }
+        console.log("手写instanceof",instance(feiniao,animal))
+        var fish=function(){
+            animal.call(this)//属性方法继承，原型是Object
+            this.swim=function(){
+                console.log("swim")
+            }
+        }
+        var yu=new fish()
+        console.log(yu)
+        console.log(yu.hasOwnProperty("eat"))
+        requestIdleCallback((deadline)=>{
+            console.log(deadline)
+            console.log('浏览器空闲时间')
+        })
+    </script>
+</body>
+</html>

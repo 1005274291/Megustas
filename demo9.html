@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #d1 {
+            width: 200px;
+            height: 200px;
+            background-color: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="d1">
+        CSS包装大法
+    </div>
+    <script>
+        var a = function (selector) {
+            this.dom = document.getElementById(selector)
+            this.css = function () {
+                var dom = this.dom
+                var argLength = arguments.length
+                if (argLength == 1) {
+                    if (typeof arguments[0] == "string") {
+                        var csskey = arguments[0]
+                        var allCss = getComputedStyle(dom)//计算后的样式
+                        //elementNode.classList.add("classname") 添加类名
+                        //elementNode.classList.remove("classname") 减掉类名
+                        return allCss[csskey]
+                    } else if (typeof arguments[0] == "object") {
+                        var cssobj = arguments[0]
+                        for (var k in cssobj) {
+                            dom.style[k] = cssobj[k]
+                        }
+                    } else {
+                        console.error("argument type wrong")
+                    }
+                } else if (argLength == 2) {
+                    var csskey = arguments[0]
+                    var cssvalue = arguments[1]
+                    dom.style[csskey] = cssvalue
+                } else {
+                    console.error("argument length wrong")
+                }
+            }
+        }
+        var d= new a("d1")
+
+
+
+
+
+        // var d1 = document.getElementsByClassName("d1")[0]
+        // var css = function () {
+        //     console.log(arguments)
+        //     var dom = arguments[0]
+        //     var argLength = arguments.length
+        //     if (argLength == 2) {
+        //         if (typeof arguments[1] == "string") {
+        //             var csskey = arguments[1]
+        //             var allCss = getComputedStyle(dom)
+        //             return allCss[csskey]
+        //         } else if (typeof arguments[1] == "object") {
+        //             var cssobj = arguments[1]
+        //             for (var k in cssobj) {
+        //                 dom.style[k] = cssobj[k]
+        //             }
+        //         } else {
+        //             console.error("argument type wrong")
+        //         }
+        //     } else if (argLength == 3) {
+        //         var csskey = arguments[1]
+        //         var cssvalue = arguments[2]
+        //         dom.style[csskey] = cssvalue
+        //     } else {
+        //         console.error("argument length wrong")
+        //     }
+        // }
+
+
+        // HTMLElement.prototype.css = function () {
+        //     var dom = this
+        //     var argLength = arguments.length
+        //     if (argLength == 1) {
+        //         if (typeof arguments[0] == "string") {
+        //             var csskey = arguments[0]
+        //             var allCss = getComputedStyle(dom)
+        //             return allCss[csskey]
+        //         } else if (typeof arguments[0] == "object") {
+        //             var cssobj = arguments[0]
+        //             for (var k in cssobj) {
+        //                 dom.style[k] = cssobj[k]
+        //             }
+        //         } else {
+        //             console.error("argument type wrong")
+        //         }
+        //     } else if (argLength == 2) {
+        //         var csskey = arguments[0]
+        //         var cssvalue = arguments[1]
+        //         dom.style[csskey] = cssvalue
+        //     } else {
+        //         console.error("argument length wrong")
+        //     }
+        // }
+    </script>
+</body>
+
+</html>

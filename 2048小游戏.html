@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- viewport解决移动端显示大小的问题 -->
+    <title>2048小游戏</title>
+    <style>
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #canvas {
+            max-width: 500px;
+            width: 80vw;
+            /* vm视窗的80% */
+            border: solid royalblue 2px;
+            display: none;
+        }
+
+        .box {
+            height: 200px;
+            width: 200px;
+            position: relative;
+            display: block;
+        }
+
+        .box::before {
+            content: '';
+            height: 20px;
+            width: 200px;
+            background: #000;
+            opacity: .2;
+            border-radius: 50%;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            animation: shadow .5s 4 ;
+        }
+
+        .box::after {
+            border-radius: 10px;
+            background: #333;
+            animation: rotate .5s 4 ;
+            content: '2048';
+            text-align: center;
+            line-height: 150px;
+            font-size: 50px;
+            color: beige;
+            position: absolute;
+            left: 25px;
+            top: 0;
+            width: 150px;
+            height: 150px;
+        }
+
+        @keyframes shadow {
+            50% {
+                transform: scaleX(1.2);
+            }
+
+            100% {
+                transform: scaleX(1);
+            }
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: translateY(0);
+            }
+
+            25% {
+                transform: translateY(10px);
+            }
+
+            50% {
+                transform: translateY(20px) scale(1.1, 0.9);
+
+            }
+
+            75% {
+                transform: translateY(10px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <div class="box"></div>
+    <script>
+        var canvas = document.getElementById("canvas")
+        var c = canvas.getContext("2d")
+        canvas.width = canvas.width
+        // canvas.width="200px" 画布重新设置宽度会使画布消失
+        canvas.height = canvas.width;
+        var margin = canvas.width * 0.02
+        var width = (canvas.width - margin * 5) / 4
+        var createBoxArr = function () {
+            boxArr = [Array(4).fill(0), Array(4).fill(0), Array(4).fill(0), Array(4).fill(0)]
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (Math.random() > 0.8) {
+                        boxArr[i][j] = 2
+                    }
+                }
+            } 
+            return boxArr
+        }
+        var boxArr=JSON.parse(localStorage.getItem("boxarr"))
+        if (!boxArr) {
+            boxArr = createBoxArr()
+            console.log(boxArr)
+            localStorage.setItem("boxarr",JSON.stringify(boxArr))
+        }
+        var beginPosition = {
+            x: 0,
+            y: 0
+        }
+        var endPosition = {
+            x: 0,
+            y: 0
+        }
+
+        var checkcanmove = function () {
+            for (var i = 0; i < 4; i++) {
+                var left, right, top, bottom
+                for (var j = 0; j < 4; j++) {
+                    var nowNum = boxArr[i][j]
+                    if (j - 1 > -1) {
+                        left = boxArr[i][j - 1]
+                    }
+                    if (j + 1 < 4) {
+                        right = boxArr[i][j + 1]
+                    }
+                    if (i - 1 > -1) {
+                        top = boxArr[i - 1][j]
+                    }
+                    if (i + 1 < 4) {
+                        bottom = boxArr[i + 1][j]
+                    }
+                    if ((nowNum == left) || (left == 0)) {
+                        return true
+                    }
+                    if ((nowNum == right) || (right == 0)) {
+                        return true
+                    }
+                    if ((nowNum == top) || (top == 0)) {
+                        return true
+                    }
+                    if ((nowNum == bottom) || (bottom == 0)) {
+                        return true
+                    }
+                    top = NaN
+                    left = NaN
+                    right = NaN
+                    bottom = NaN
+                }
+            }
+            return false
+        }
+        var checkChange = function (arr) {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (arr[i][j] == boxArr[i][j]) {
+
+                    } else {
+                        return true//数组发生改变
+                    }
+                }
+            }
+            return false//数组没发生改变
+        }
+        var checkfail = function () {
+            isfail = checkcanmove()
+            if (!isfail) {
+                var max = 0
+                for (var i = 0; i < 4; i++) {
+                    for (var j = 0; j < 4; j++) {
+                        if (boxArr[i][j] > max) {
+                            max = boxArr[i][j]
+                        }
+                    }
+                }
+                var yes = confirm(`你的得分是：${max} 还需要继续吗`)
+                if (yes) {
+                    boxArr = createBoxArr()
+                    render()
+                }
+
+            } else {
+
+            }
+        }
+        var copyarr = function () {
+            var emptyarr = [[], [], [], []]
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    emptyarr[i][j] = boxArr[i][j]
+                }
+            }
+            return emptyarr
+        }
+        var addNewBox = function () {
+            var emptyarr = []
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (boxArr[i][j] == 0) {
+                        emptyarr.push({
+                            x: i,
+                            y: j
+                        })
+                    }
+                }
+            }
+            var randomNum = parseInt(Math.random() * emptyarr.length)
+            boxArr[emptyarr[randomNum].x][emptyarr[randomNum].y] = Math.random() > 0.5 ? 2 : 4
+        }
+        var toTop = function () {
+            var savearr = copyarr()
+            var clearZero = function () {
+                for (var i = 0; i < 4; i++) {
+                    var emptyarr = []
+                    for (var j = 0; j < 4; j++) {
+                        if (boxArr[j][i] == 0) {
+
+                        } else {
+                            emptyarr.push(boxArr[j][i])
+                        }
+                    }
+                    for (var k = 0; k < 4; k++) {
+                        if (k < emptyarr.length) {
+                            boxArr[k][i] = emptyarr[k]
+                        } else {
+                            boxArr[k][i] = 0
+                        }
+                    }
+                }
+            }
+            clearZero()
+            //叠加
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    var nowNum = boxArr[j][i]
+                    var nextNum
+                    if (j + 1 < 4) {
+                        nextNum = boxArr[j + 1][i]
+                    } else {
+                        nextNum = NaN
+                    }
+                    if (nowNum == nextNum) {
+                        boxArr[j][i] *= 2
+                        boxArr[j + 1][i] = 0
+                    }
+                }
+            }
+            clearZero()
+            if (checkChange(savearr)) {
+                addNewBox()
+            } else {
+            }
+            render()
+            // debugger
+            setTimeout(checkfail, 0)//让检查是否能够移动异步执行
+        }
+        var toBottom = function () {
+            var savearr = copyarr()
+            var clearZero = function () {
+                for (var i = 0; i < 4; i++) {
+                    var emptyarr = []
+                    for (var j = 3; j >= 0; j--) {
+                        if (boxArr[j][i] == 0) {
+
+                        } else {
+                            emptyarr.push(boxArr[j][i])
+                        }
+                    }
+                    for (var k = 0; k < 4; k++) {
+                        if (k < emptyarr.length) {
+                            boxArr[3 - k][i] = emptyarr[k]
+                        } else {
+                            boxArr[3 - k][i] = 0
+                        }
+                    }
+                }
+            }
+            clearZero()
+            //叠加
+            for (var i = 0; i < 4; i++) {
+                for (var j = 3; j >= 0; j--) {
+                    var nowNum = boxArr[j][i]
+                    var nextNum
+                    if (j - 1 > -1) {
+                        nextNum = boxArr[j - 1][i]
+                    } else {
+                        nextNum = NaN
+                    }
+                    if (nowNum == nextNum) {
+                        boxArr[j][i] *= 2
+                        boxArr[j - 1][i] = 0
+                    }
+                }
+            }
+            clearZero()
+            if (checkChange(savearr)) {
+                addNewBox()
+            } else {
+            }
+            render()
+            // debugger
+            setTimeout(checkfail, 0)//让检查是否能够移动异步执行
+        }
+        var toRight = function () {
+            var savearr = copyarr()
+            var clearZero = function () {
+                for (var i = 0; i < 4; i++) {
+                    var emptyarr = []
+                    for (var j = 3; j >= 0; j--) {
+                        if (boxArr[i][j] == 0) {
+
+                        } else {
+                            emptyarr.push(boxArr[i][j])
+                        }
+                    }
+                    for (var k = 0; k < 4; k++) {
+                        if (k < emptyarr.length) {
+                            boxArr[i][3 - k] = emptyarr[k]
+                        } else {
+                            boxArr[i][3 - k] = 0
+                        }
+                    }
+                }
+            }
+            clearZero()
+            //叠加
+            for (var i = 0; i < 4; i++) {
+                for (var j = 3; j >= 0; j--) {
+                    var nowNum = boxArr[i][j]
+                    var nextNum
+                    if (j - 1 > -1) {
+                        nextNum = boxArr[i][j - 1]
+                    } else {
+                        nextNum = NaN
+                    }
+                    if (nowNum == nextNum) {
+                        boxArr[i][j] *= 2
+                        boxArr[i][j - 1] = 0
+                    }
+                }
+            }
+            clearZero()
+            if (checkChange(savearr)) {
+                addNewBox()
+            } else {
+            }
+            render()
+            // debugger
+            setTimeout(checkfail, 0)//让检查是否能够移动异步执行
+        }
+        var toLeft = function () {
+            var savearr = copyarr()
+            var clearZero = function () {
+                for (var i = 0; i < 4; i++) {
+                    var emptyarr = []
+                    for (var j = 0; j < 4; j++) {
+                        if (boxArr[i][j] == 0) {
+
+                        } else {
+                            emptyarr.push(boxArr[i][j])
+                        }
+                    }
+                    for (var k = 0; k < 4; k++) {
+                        if (k < emptyarr.length) {
+                            boxArr[i][k] = emptyarr[k]
+                        } else {
+                            boxArr[i][k] = 0
+                        }
+                    }
+                }
+            }
+            clearZero()
+            //叠加
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    var nowNum = boxArr[i][j]
+                    var nextNum
+                    if (j + 1 < 4) {
+                        nextNum = boxArr[i][j + 1]
+                    } else {
+                        nextNum = NaN
+                    }
+                    if (nowNum == nextNum) {
+                        boxArr[i][j] *= 2
+                        boxArr[i][j + 1] = 0
+                    }
+                }
+            }
+            clearZero()
+            if (checkChange(savearr)) {
+                addNewBox()
+            } else {
+            }
+            render()
+            // debugger
+            setTimeout(checkfail, 0)//让检查是否能够移动异步执行
+        }
+        //键盘方向键操作
+        document.addEventListener("keydown", function (e) {
+            switch (e.keyCode) {
+                case 38:
+                    toTop()
+                    break
+                case 40:
+                    toBottom()
+                    break
+                case 37:
+                    toLeft()
+                    break
+                case 39:
+                    toRight()
+                    break
+            }
+        })
+        //电脑鼠标滑动
+        canvas.addEventListener("mousedown", function (e) {
+            beginPosition.x = e.clientX
+            beginPosition.y = e.clientY
+        })
+        canvas.addEventListener("mouseup", function (e) {
+            endPosition.x = e.clientX
+            endPosition.y = e.clientY
+            judgeEvent()
+        })
+        //移动触摸滑动
+        canvas.addEventListener("touchstart", function (e) {//触屏多点触控形成触摸的列表
+            beginPosition.x = e.changedTouches[0].clientX
+            beginPosition.y = e.changedTouches[0].clientY
+        })
+        canvas.addEventListener("touchend", function (e) {
+            endPosition.x = e.changedTouches[0].clientX
+            endPosition.y = e.changedTouches[0].clienty
+            judgeEvent()
+        })
+        var judgeEvent = function () {
+            var deltaX = endPosition.x - beginPosition.x//向右滑动的距离
+            var deltaY = endPosition.y - beginPosition.y//向下滑动的距离
+            if (deltaX > 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                toRight()
+            }
+            if (deltaX < 0 && Math.abs(deltaX) > Math.abs(deltaY)) {
+                toLeft()
+            }
+            if (deltaY > 0 && Math.abs(deltaX) < Math.abs(deltaY)) {
+                toBottom()
+            }
+            if (deltaY < 0 && Math.abs(deltaX) < Math.abs(deltaY)) {
+                toTop()
+            }
+        }
+        var render = function () {
+            for (var i = 0; i < 4; i++) {
+                for (var j = 0; j < 4; j++) {
+                    if (boxArr[i][j] == 0) {
+                        c.beginPath()
+                        var y = margin * (i + 1) + width * i
+                        var x = margin * (j + 1) + width * j
+                        c.fillStyle = "#999"
+                        c.fillRect(x, y, width, width)
+                        c.closePath()
+                    } else {
+                        c.beginPath()
+                        var y = margin * (i + 1) + width * i
+                        var x = margin * (j + 1) + width * j
+                        c.fillStyle = "#333"
+                        c.fillRect(x, y, width, width)//画方块
+                        c.font = "30px Arial"
+                        var fwidth = c.measureText(boxArr[i][j]).width//测量文字的宽度
+                        var fheight = 25
+                        c.fillStyle = "#fff"
+                        c.fillText(boxArr[i][j], x + (width - fwidth) / 2, y + (width - fheight) / 2 + fheight)
+                        c.closePath()
+                    }
+                }
+            }
+            localStorage.setItem("boxarr",JSON.stringify(boxArr))
+        }
+        setTimeout(function(){
+            document.getElementsByClassName("box")[0].style.display="none"
+            canvas.style.display="block"
+        },2000)
+        render()
+    </script>
+</body>
+
+</html>

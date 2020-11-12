@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        var ajxa=function(method,url,data,callback){
+            var xhr =new XMLHttpRequest()
+            if(method.toLocaleLowerCase()=='get'){
+                var str ="?"
+                for(var key in data){
+                    var value =data[key]
+                    str +=key+"="+value+"&"
+                }
+                str=str.slice(0,str.length-1)
+                url+=str
+            }
+            xhr.open(method,url,true)
+            if(method.toLocaleLowerCase()=="get"){
+                xhr.send()
+            }else{
+                xhr.send(data)
+            }
+            xhr.onreadystatechange=function(){
+                if(xhr.status ==200&&xhr.readyState ==4){
+                    callback(JSON.parse(xhr.response))
+                }
+            }
+
+        }
+        ajxa("GET","http://127.0.0.1:3002/getOneClassStudent",{zu:13,name:1},function(e){
+            console.log(e)
+        })
+        var getDate = function () {
+            var xhr = new XMLHttpRequest()
+            xhr.open("GET", "http://127.0.0.1:3002/getOneClassStudent?zu=13", true)
+            xhr.send()
+            var tpl = '<div class="card">' +
+                '<div cllass="name">' +
+                'name' + '</div>' + '<div class="no">' + 'no' + '</div>' + "</div>"
+
+            var success = function () {
+                var result = JSON.parse(xhr.response).result
+                var str = ''
+                result.forEach(function (item, index) {
+                    str += tpl.replace("name", result[index].name).replace("no", result[index].no)
+                })
+                console.log(str)
+                document.getElementById("root").innerHTML = str
+            }
+            var error = function () {
+                console.log("error")
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.status == 200 && xhr.readyState == 4) {
+                    success()
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>

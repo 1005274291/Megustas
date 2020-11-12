@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        //手写hooks的useState
+        let wipFiber = null //正在工作的fiber
+        let hookIndex = null //hook索引
+        function useState(init) {
+            const oldHooks = wipFiber.base && wipFiber.base.hooks && wipFiber.base.hooks[hookIndex]
+            const hook = {
+                state: oldHooks ? oldHooks.state : init,
+                queue: []//实际的hook是用链表存储的
+            }
+            const actions = oldHooks ? oldHooks.queue : []
+            actions.forEach(action => {
+                hook.state = action
+            })
+            const setState = action => {
+                hook.queue.push(action)
+                workInProgressRoot = {
+                    dom: currentRoot.dom,
+                    props: currentRoot.props,
+                    base: currentRoot
+                }
+                nextUnitOfWork = workInProgressRoot
+                delletions = []
+            }
+            wipFiber.hooks.push(hook)
+            hookIndex++
+            return [hook.state, setState]
+        }
+        //把类组件，转成函数组件，利用hooks实现setState
+        function transfer(Component) {
+            return function (props) {
+                const component = new Component(props)
+                let [state, setState] = useState(component.state)
+                component.props = props
+                component.state = state
+                component.setState = setState
+                return component.render()
+            }
+        }
+    </script>
+</body>
+
+</html>

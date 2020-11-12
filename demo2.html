@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<style type="text/css">
+			*{
+				padding: 0px;
+				margin: 0px;
+			}
+			.wrap{
+				width: 1226px;
+				height: 460px;
+				position: relative;
+			}
+			.wrap .wrap-list{
+				width: 100%;
+				height: 100%;
+				position: absolute;
+			}
+			.wrap .wrap-list .wrap-item{
+				width: 100%;
+				height: 100%;
+				list-style: none;
+				position: absolute;
+				top: 0px;
+				z-index: 9;
+			}
+			.wrap .wrap-list .wrap-item a img{
+				width:1226px;
+				height:460px;
+			}
+			.button{
+				width: 41px;
+				height: 69px;
+				position: absolute;
+				top: 195px;
+				z-index: 100;
+				background-color: rgba(0,0,0,0);
+				border-style: none;
+			}
+			.button:hover{
+				background-color: grey;
+			}
+			.button.left{
+				position: absolute;
+				left: 0px;
+			}
+			.button.right{
+				position: absolute;
+				right: 0px;
+			}
+			.wrap .wrap-list .wrap-item.active{
+				z-index: 80;
+			}
+			.point-list{
+				width: 200px;
+				height: 50px;
+				position: absolute;
+				right: 10px;
+				bottom: 10px;
+				float: left;
+				z-index: 1000;
+				list-style: none;
+			}
+			.point{
+				width: 10px;
+				height: 10px;
+				background-color: grey;
+				float: left;
+				margin: 10px;
+				border-radius: 50%;
+			}
+			.point:hover{
+				background-color: white;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="wrap">
+			<ul class="wrap-list">
+				<li class="wrap-item"><a href=""><img src="https://i1.mifile.cn/a4/xmad_15324154865354_Lyjde.jpg"/></a></li>
+				<li class="wrap-item"><a href=""><img src="https://i1.mifile.cn/a4/xmad_15283412774873_ZVbXJ.jpg"/></a></li>
+				<li class="wrap-item"><a href=""><img src="https://i1.mifile.cn/a4/xmad_15320040755086_SynCU.jpg"/></a></li>
+				<li class="wrap-item"><a href=""><img src="https://i1.mifile.cn/a4/xmad_15314769640218_exasB.jpg"/></a></li>
+				<li class="wrap-item"><a href=""><img src="https://i1.mifile.cn/a4/xmad_15324001399901_MdiBw.jpg"/></a></li>
+			</ul>
+			<button class="button left"><</button>
+			<button class="button right">></button>
+			<ul class="point-list">
+				<li class="point" num="0"></li>
+				<li class="point" num="1"></li>
+				<li class="point" num="2"></li>
+				<li class="point" num="3"></li>
+				<li class="point" num="4"></li>
+			</ul>
+		</div>
+		<script type="text/javascript">
+			var wrap_item=document.getElementsByClassName("wrap-item")
+			var index=0
+			var left=document.getElementsByClassName("left")[0]
+			var right=document.getElementsByClassName("right")[0]
+			var clear=function(){
+				for (var i=0;i<wrap_item.length;i++) {
+					wrap_item[i].className="wrap-item"
+				}
+			}
+			var goIndex=function(){
+				wrap_item[index].className="wrap-item active"
+			}
+			var goRight=function(){
+				if(index==4){
+					index=0
+				}else{
+					index++
+				}
+				clear()
+				goIndex()
+			}
+			var goleft=function(){
+				if(index==0){
+					index=4
+				}else{
+					index--
+				}
+				clear()
+				goIndex()
+			}
+			left.addEventListener("click",goleft)
+			right.addEventListener("click",goRight)
+			var point=document.getElementsByClassName("point")
+			for (var j=0;j<point.length;j++) {
+				point[j].addEventListener("click",function(){
+					index=this.getAttribute("num")
+					clear()
+					goIndex()
+				})
+			}
+			var time=0
+			var isOut=true
+			setInterval(function(){
+				time++
+				if(time==50&&isOut==true){
+					clear()
+					goRight()
+					time=0
+				}
+			},40)
+			var wrap=document.getElementsByClassName("wrap")[0]
+			wrap.addEventListener("mouseover",function(){
+				isOut=false
+			})
+			wrap.addEventListener("mouseout",function(){
+				isOut=true
+				time=0
+			})
+		</script>
+	</body>
+</html>

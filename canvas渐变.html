@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="myCavans1" height=500 width=500></canvas>
+    <canvas id="myCavans2" height=500 width=500></canvas>
+    <canvas id="myCavans3" height=2000 width=2000></canvas>
+    <script type="text/javascript">
+        function drawline() {
+            var c = document.getElementById("myCavans1");
+            var ctx = c.getContext("2d");
+            var dx = 150;
+            var dy = 150;
+            var s = 100;
+            ctx.beginPath();
+            var dig = Math.PI / 15 * 11;
+            for (var i = 0; i < 30; i++) {
+                var x = Math.cos(i * dig);
+                var y = Math.sin(i * dig);
+                ctx.lineTo(dx + x * s, dy + y * s);
+
+            }
+            ctx.closePath();
+            ctx.stroke();
+        }
+        function draw() {
+            var c = document.getElementById("myCavans2");
+            var ctx = c.getContext("2d");
+            var Colordiagonal = ctx.createRadialGradient(100, 100, 0, 100, 100, 100);//渐变色
+
+            // x0	渐变的开始圆的 x 坐标
+            // y0	渐变的开始圆的 y 坐标
+            // r0	开始圆的半径
+            // x1	渐变的结束圆的 x 坐标
+            // y1	渐变的结束圆的 y 坐标
+            // r1	结束圆的半径
+            Colordiagonal.addColorStop(0, "red");
+            Colordiagonal.addColorStop(0.5, "green");
+            Colordiagonal.addColorStop(1, "yellow");
+            var centerX = 100;
+            var centerY = 100;
+            var radius = 100;
+            var startingAngle = 0;
+            var endingAngle = 2 * Math.PI;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, radius, startingAngle, endingAngle, false);
+            ctx.fillStyle = Colordiagonal;
+            ctx.stroke();
+            ctx.fill();
+        }
+        function drawimg() {
+            var c = document.getElementById("myCavans3")
+            var ctx = c.getContext("2d")
+            var img = new Image()
+            img.src = "../node/1.jpg"
+            img.onload = function () {
+                // ctx.drawImage(img,100,100)//在画布上定位图像x,y的坐标
+                // ctx.drawImage(img,200,200)
+
+                ctx.drawImage(img, 250, 100, 300, 300)//在画布上定位图像，并规定图像的宽度和高度
+
+                ctx.drawImage(img, 0, 0, 500, 500, 250, 250, 300, 300)//剪切图像，并在画布上定位被剪切的部分
+                // ctx.drawImage(img,sx,sy,swidth,sheight,x,y,width,height);
+                //img	规定要使用的图像、画布或视频。
+                // sx	可选。开始剪切的 x 坐标位置。
+                // sy	可选。开始剪切的 y 坐标位置。
+                // swidth	可选。被剪切图像的宽度。
+                // sheight	可选。被剪切图像的高度。
+                // x	在画布上放置图像的 x 坐标位置。
+                // y	在画布上放置图像的 y 坐标位置。
+                // width	可选。要使用的图像的宽度。（伸展或缩小图像）
+                // height	可选。要使用的图像的高度。（伸展或缩小图像）
+
+            }
+        }
+        var dra = function () {
+            drawline()
+            draw()
+            drawimg()
+        }
+        window.addEventListener("load", dra, true);
+        //下面的代码通过 getImageData() 复制画布上指定矩形的像素数据，然后通过 putImageData() 将图像数据放回画布
+        // var c = document.getElementById("myCanvas");
+        // var ctx = c.getContext("2d");
+        // ctx.fillStyle = "red";
+        // ctx.fillRect(10, 10, 50, 50);
+
+        // function copy() {
+        //     var imgData = ctx.getImageData(10, 10, 50, 50);  复制画布上的一部分
+        //     ctx.putImageData(imgData, 10, 70);  将画布上的一部分放到画布的其他未知
+        // }
+    </script>
+</body>
+
+</html>

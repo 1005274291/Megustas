@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/pure-min.css">
+    <link rel="stylesheet" href="https://unpkg.com/purecss@1.0.0/build/base-min.css">
+    <!-- Normalize.css 初始化css的 -->
+    <style>
+        body {
+            margin: 0px;
+            background-color: #f2f2f2;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            /* background-color:cadetblue; */
+        }
+
+        .search-list {
+            width: 500px;
+            /* background-color: cadetblue; */
+            position: fixed;
+            transform: translateY(-100%);
+            transition: all .3s;
+            overflow-y: scroll;
+            overflow-x: hidden;
+            height: 600px;
+        }
+
+        .search-list.active {
+            transform: translateY(50px);
+        }
+
+        #result-list {
+            list-style: none;
+            overflow: scroll;
+            padding: 0px;
+        }
+
+        #result-list li {
+            cursor: pointer;
+            padding-left: 20px;
+            z-index: 100;
+        }
+
+        #result-list li:hover {
+            box-shadow: 0.1px 0.1px 10px 0px rgba(22, 35, 184, 0.6);
+        }
+
+        .lrc-wrap {
+            list-style: none;
+            margin-top: 250px;
+            text-align: center;
+            transition: all .3s;
+        }
+
+        .lrc-all-wrap {
+            position: absolute;
+            top: 50px;
+            height: 600px;
+            background-color: #f2f2f2;
+            padding-top: 5px;
+            overflow: hidden;
+            z-index: -10;
+        }
+
+        .lrc-item {
+            height: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="pure-form">
+        <input type="text" class="pure-input-rounded" id="keyword">
+        <button class="pure-button" id="search-button">搜索</button>
+    </div>
+    <!-- <div>
+        <input type="text" id="keyword">
+        <button id="search-button">搜索</button>
+    </div> -->
+    <div class="pure-menu custom-restricted-width search-list">
+        <span class="pure-menu-heading">搜索列表</span>
+    
+        <ul class="pure-menu-list" id="result-list">
+            <!-- <li class="pure-menu-item"><a href="#" class="pure-menu-link">Flickr</a></li> -->
+        </ul>
+    </div>
+    <!-- <div class="search-list">
+        <ul id="result-list">
+        </ul>
+    </div> -->
+    <div class="pure-menu pure-menu-scrollable custom-restricted lrc-all-wrap">
+        <ul class="pure-menu-list lrc-wrap">
+            <!-- <li class="pure-menu-item"><a href="#" class="pure-menu-link">Home</a></li> -->
+        </ul>
+    </div>
+    <audio src="" id="audio" controls></audio>
+    <!-- <div class="lrc-all-wrap">
+        <ul class="lrc-wrap">
+
+        </ul>
+    </div> -->
+    <script src="./music.js"></script>
+</body>
+
+</html>

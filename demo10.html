@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <table>
+        <tr>
+            <td>标题</td>
+            <td><input type="text" id="title"></td>
+        </tr>
+        <tr>
+            <td>内容</td>
+            <td><input type="text" id="content"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><button id="button">录入犯罪记录</button></td>
+        </tr>
+    </table>
+    <hr>
+    <ul id="list">
+
+    </ul>
+    <script>
+        var titleinput =document.getElementById("title")
+        var contentinput=document.getElementById("content")
+        var submit=document.getElementById("button")
+        var list=document.getElementById("list")
+        var notelist=[]
+        var tpl='<li>'+
+        '<p>date</p>'+
+        '<h1>title</h1>'+
+        '<h2>content</h2>'+
+        '</li>'
+        var render=function(){
+            var html=""
+            for(var i=0;i<notelist.length;i++){
+                var thetime=notelist[i].date
+                var thedate=new Date(thetime)
+                var year=thedate.getFullYear()
+                var month=thedate.getMonth()+1
+                var date=thedate.getDate()
+                var hours =thedate.getHours()
+                var min =thedate.getMinutes()
+                var s=thedate.getSeconds()
+                hours=hours<10 ? "0"+hours:hours
+                min=min<10 ? "0"+min:min
+                s=s<10 ? "0"+s:s
+                var datestr=year+'年'+month+"月"+date+"日"+hours+":"+min+":"+s
+                html+=tpl.replace("date",datestr)
+                .replace("title",notelist[i].title)
+                .replace("content",notelist[i].content)
+            }
+            list.innerHTML=html
+        }
+        submit.addEventListener("click",function(){
+            var title=titleinput.value
+            var content=contentinput.value
+            if(title.length==0 || content.length ==0){
+                alert("不要在点了")
+                return
+            }
+            var note={
+                title:title,
+                content:content,
+                date:new Date().getTime()
+            }
+            notelist.push(note)
+            localStorage.setItem("notelist",JSON.stringify(notelist))
+            notelist=JSON.parse(localStorage.getItem("notelist"))
+            render()
+            titleinput.value=""
+            contentinput.value=""
+        })
+        notelist=JSON.parse(localStorage.getItem("notelist"))
+        if(notelist){
+
+        }else{
+            notelist=[]
+        }
+        render()
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <!-- es6模块化 模块作用域（模块内变量只能在模块内部访问），自动严格模式 -->
+    <script type="module"></script>
+    <!-- es6模块化导出的三种形式
+        1. export var b=2
+        2. var c=3,d=4; export {c as myC,d}
+        3. 默认导出 export default []
+
+        引入模块 import arr,{b,myC,d as myD} from "./module.js"
+        同步引入模块中的全部内容 import * as m from "./module.js"
+        异步引入模块中的全部内容 import("./module.js").then(functuon(data){}) 返回一个promise对象
+    -->
+    <script>
+        {   var n=0
+            //var关键字 全局/函数作用域，允许变量提升，允许重复声明
+            let a=1
+            // let关键字 1.块级定义域（for循环和if语句的花括号） 2.不存在变量提升，在声明之前调用会产生死去 3.不允许重复声明
+            const b=2
+            //const关键字 不允许重复赋值，其他的和let一样
+        }
+        //箭头函数
+        var fn=x=>({result:Math.pow(x,2)})  //1.返回对象需要用括号包裹  2.this是被定义时环境的this function的this是调用环境的this  3.不能当作构造函数使用 4.没有arguments和callee
+        //es6 函数默认参数  最好放在参数列表的尾部
+        function greeet(name="world"){
+            console.log(name)
+        }
+        //es6 扩展参数 可以配合箭头函数使用
+        var a=(a,...args)=>console.log(a,args)  //传参时会把多出来的参数形成args数组  args要放在参数列表的最后一项
+
+        //es6 class 1.不存在变量提升 2.本质是function 3.强制使用严格模式 4.必须使用new关键字
+        class Animal{
+            constructor(type,weight){
+                this.type=type
+                this.weight=weight
+            }
+            breath(){//原型方法
+                console.log("呼吸")
+            }
+            static info(){ //静态方法只能由构造器调用，不能通过实例调用  自动继承
+                console.log("I am Animal")
+            }
+        }
+        class Human extends Animal{
+            constructor(weight,name){
+                super("人",weight)
+                this.name=name
+            }
+            breath(){
+                super.breath()
+                console.log("继承父类方法breath并重写")
+            }
+        }
+        var xiaoming=new Human(120,"小名")
+        //es6数组的扩展运算符  第一层深拷贝之后浅拷贝
+        var aa=[undefined,2,3,8]
+        var bb=[4,5,6]
+        var cc=[...aa,...bb]
+        console.log(cc)
+        //对象的扩展运算符 es2018 es9
+        var obj1={
+            a:1,
+            b:2
+        }
+        var obj2={
+            a:2,
+            b:3
+        }
+        var obj3=Object.assign(obj1,obj2)//合并对象并且会更改第一个对象
+        console.log(
+            Object.keys(obj3),//抽取对象当中的键
+            Object.values(obj3),//抽取对象当中的值
+            Object.entries(obj3),//抽取对象当中的键值对
+            Object.fromEntries(Object.entries(obj3))//entries()方法的逆方法
+        )
+        // Object.is(a,b)  比较a和b是否相同，，包括NaN不包括0，-0
+        function isNegativeZero(n){//比较是否是-0
+            return 0===n&&1/n===-Infinity
+        }
+        console.log({d:5,...obj1,...obj2})  //会覆盖前面的key 也采用浅拷贝
+        //将可迭代的对象转化为真正的数组 如arguments HTMLCollection
+        // Array.from(obj)
+        // Array.of(5)  将参数转化成一个数组   new Array()也可以将参数转化成数组，可是如果只传入一个参数会形成以参数为长度的数组
+        //arr.find(item=>item.id===1) 返回查找数组中的项 找不到返回undefined
+        //arr.findIndex(item=>item.id===1) 返回查找数组中的下标 找不到返回-1
+        //arr.includes() 来判断数组中是否有某一个值  采用等值比较算法包括NaN 返回值是布尔值 而arr.indexOf() 采用的是===比较 返回的是数组中的下标
+        //arr.fill(0) 数组中所有项都初始化为0
+        //arr.flat(n) 将数组扁平化 n是打平的最大层级，默认是1
+        //arr.flatMap() 将数组先map后flat
+        //解构赋值  数组基于位置的匹配 对象基于key匹配
+        const [f=1,b,...rest]=aa
+        var {head,body:bod}=document  //var bod= document.body
+        // Es6中属性名的扩展
+        // const obj={
+        //     name, //属性名和值名称相等 name:name
+        //     method(){//省略：function
+        //         return "hello"
+        //     },
+        //     [key]:value//需要计算的key用【】包起来
+        // }
+        // 字符串模板 在``里面直接打空格形成换行
+        str=`
+        adwaawdwadwadawdawdaw
+        字符串不换行了${aa}
+        `
+        console.log(str)
+        //新数据类型symbol
+        const s1=Symbol()
+        const s2=Symbol()
+        const obj4={
+            [s1]:1,
+            [s2]:2
+        }
+        //无法通过JSON.stringify(obj)和Object.keys(obj)遍历到  可以做对象的key也可以做class的私有属性
+        const A=(function(){
+            const key=Symbol.for("123")
+            class A{
+                constructor(){
+                    this[key]=1
+                }
+                getId(){
+                    return this[key]
+                }
+            }
+            return A
+        })()
+        const demo=new A()
+        console.log(demo);
+        const keyss=Reflect.ownKeys(demo)[0]
+        console.log(demo[keyss])
+        //使用Proxy定义拦截器
+        const headers =new Proxy({
+            "content-type":"text/plain"
+        },{
+            get(target,key){//取值拦截器
+                return target[key.toLowerCase()]
+            },
+            set(target,key,value){//赋值拦截器
+                target[key.toLowerCase()]=value
+            },
+            has(target,key){//查询拦截器
+                return key.toLowerCase() in target
+            },
+            deleteProperty(target,key){//删除拦截器
+                delete target[key.toLowerCase()]
+            }
+        })
+        console.log(headers["Content-Type"])
+        // urlStorage.a="hello"  利用url进行存储
+        //es6 promise 解决地狱回调，变量作用域问题和错误捕捉问题
+        function test(x){
+            return new Promise((resolve,reject)=>{
+                setTimeout(()=>resolve(x*2),100)
+            })
+        }
+        //function f(x){
+        // return Promise.resolve(x)
+        //        .then(function1)  then中必须传入一个函数，如果不是函数会被忽略
+        //        .then(function2)  前一个函数的返回值回成为后一个函数的参数 形成链式调用
+        // }  
+        //f(10).then(successlog).catch(errfunction) ==.then(undefined,errfunction) 成功回调的错误不会被捕获掉
+
+        // function f(x){   并行执行 执行时间最长的promise执行完返回一个数组结果  race执行完一个就返回结果
+        //     Promise.all([
+        //     function1(x),
+        //     function2(x)
+        //     ]).then(log)
+        // }
+    </script>
+</body>
+</html>

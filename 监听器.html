@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #d1 {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            position: absolute;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="d1">
+
+    </div>
+    <script>
+        //事件类型
+        //鼠标类
+        //click 点击 mousedown 鼠标按下 mouseup 鼠标抬起来
+        //mouseenter mouseleave 鼠标移进父元素触发mouseenter移进子元素不会触发mouseleave
+        //mouseover mouseout 鼠标移进父元素触发mouseover 鼠标移进子元素触发mouseout
+        //mousemove 鼠标移动
+        //键盘类（document）
+        // 用户按下键盘上的字符键时
+        // 首先会触发 keydown 事件
+        // 然后紧接着触发 keypress 事件
+        // 最后触发 keyup事件
+        //keydown 按所有键都会触发 包括上下左右键
+        //keypress 字符键  keyCode 还与 ASCII码对应
+        //keyup 键子弹起来 
+        //event.keyCode可以知道触发的是哪一个键子
+        //UI类(window)
+        //load 加载
+        //unload  卸载
+        //resize 窗口改变大小
+        //scroll 滚轮 window。scrollY页面滚动的高度
+        var d1 = document.getElementById("d1")
+        var isMove = false
+        d1.addEventListener("mousedown", function () {
+            isMove = true
+        })
+        d1.addEventListener("mouseup", function () {
+            isMove = false
+        })
+        document.addEventListener("mousemove", function (e) {
+            if (!isMove) {
+                return
+            }
+            var x = e.clientX
+            var y = e.clientY
+            d1.style.left = x - 100 + "px"
+            d1.style.top = y - 100 + "px"
+        })
+    </script>
+</body>
+
+</html>

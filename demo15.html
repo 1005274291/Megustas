@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            background-color: gray;
+        }
+
+        .progress {
+            width: 1000px;
+            height: 4px;
+            background-color: gray;
+        }
+
+        #percent {
+            width: 0px;
+            height: 4px;
+            background-color: red;
+        }
+        .wrap{
+            position: relative;
+            width: 1000px;
+            overflow: hidden;
+        }
+        .danmu{
+            position: absolute;
+            left: 100%;
+            top: 30px;
+            white-space: nowrap;
+            transition: all 6s linear;
+            font-size: 1.2em;
+            font-weight: 700;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .danmu.active{
+            left: -1000px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <video src="./7b28adc7b34527bf1b2ff1ed02156b1e.mp4" controls id="video" width="1000px"></video>
+        <div>
+            <span id="current">00:00</span>/ <span id="duration"></span>
+        </div>
+        <div class="progress">
+            <div id="percent"></div>
+        </div>
+        <input type="range" id="volum-control">
+        <button id="fullscreen">全屏</button>
+        <p class="danmu">这是一条弹幕</p>
+    </div>
+</body>
+<script>
+    var video = document.getElementById("video")
+    var current = document.getElementById("current")
+    var duration = document.getElementById("duration")
+    var percent = document.getElementById("percent")
+    var volumcontrol = document.getElementById("volum-control")
+    var button = document.getElementById("fullscreen")
+    var wrap =document.getElementsByClassName("wrap")[0]
+    var secondstomins = function (s) {
+        s = parseInt(s)
+        var min = parseInt(s / 60)
+        min = min > 9 ? min : "0" + min
+        var sec = s % 60
+        sec = sec > 9 ? sec : "0" + sec
+        var mins = min + ":" + sec
+        return mins
+    }
+    video.addEventListener("canplay", function () {
+        duration.innerHTML = secondstomins(video.duration)
+    })
+    video.addEventListener("timeupdate", function () {
+        current.innerHTML = secondstomins(video.currentTime)
+        var perc = getpercent()
+        // console.log(perc)
+        setpercent(perc)
+        progressdanmu()
+    })
+    var getpercent = function () {
+        return video.currentTime / video.duration
+    }
+    var setpercent = function (per) {
+        percent.style.width = per * 1000 + "px"
+    }
+    volumcontrol.addEventListener("change", function () {
+        var v = parseInt(this.value) / 100
+        video.volume = v
+    })
+    button.addEventListener("click", function () {
+        video.webkitRequestFullscreen()
+    })
+    var isPlaying = true
+    video.addEventListener("click", function () {
+        console.log(isPlaying)
+        if (isPlaying) {
+            video.pause()
+            isPlaying = false
+        } else {
+            video.play()
+            isPlaying = true
+        }
+    })
+    var danmulist=[
+        {
+            time:2000,
+            content:"这个大爷好骚啊"
+        },
+        {
+            time:5000,
+            content:"我好喜欢你"
+        },{
+            time:10000,
+            content:"就知道你喜欢我"
+        }
+    ]
+    var orderdanmu=function(){
+        danmulist.sort(function(a,b){
+            return a.time-b.time
+        })
+    }
+    orderdanmu()
+    var sendanmu=function(content){
+        var p=document.createElement("p")
+        p.className="danmu"
+        p.style.top=Math.random()*300+"px"
+        p.innerHTML=content
+        wrap.appendChild(p)
+        setTimeout(function(){
+            p.className="danmu active"
+        },10)
+        setTimeout(function(){
+            wrap.removeChild(p)
+        },6000)
+    }
+    var progressdanmu =function(){
+        if(danmulist[0] && danmulist[0].time - video.currentTime*1000 <300){
+            console.log("d")
+            sendanmu(danmulist.shift().content)
+        }
+    }
+</script>
+
+</html>

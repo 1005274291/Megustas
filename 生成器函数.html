@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //yield对象
+        function * hello(){
+            yield "hello"
+            yield "world"
+            return "ending"
+        }
+        var hw=hello() //返回一个迭代器对象
+        //每一次调用next()会返回一个对象{value:xx,done:Boolean} 都会执行到yield语句截至，，直到遍历到return时done才为true
+    </script>
+</body>
+</html>

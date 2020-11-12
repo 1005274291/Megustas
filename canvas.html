@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <canvas id="c" width="500" height="300" style="background-color: antiquewhite;"></canvas>
+    <canvas id="b" width="500" height="300" style="background-color: aquamarine;"></canvas>
+    <script>
+        var canvas = document.getElementById("c")
+        var c = canvas.getContext("2d")
+        var colors = function () {
+            var r = parseInt(Math.floor(Math.random() * 255))
+            var g = parseInt(Math.floor(Math.random() * 255))
+            var b = parseInt(Math.floor(Math.random() * 255))
+            var str = "rgb" + "(" + r + "," + g + ',' + b + ')'
+            return str
+        }
+        var point = function () {
+            this.r = Math.random() * 10 + 10,
+                this.color = colors(),
+                this.speed = Math.random() * 5 + 3,
+                this.x = Math.random() * canvas.width
+        }
+        var pArr = []
+        for (var i = 0; i < 20; i++) {
+            pArr.push(new point())
+        }
+        setInterval(function () {
+            //每当画布的高度或宽度被重设时，画布内容就会被清空
+            canvas.width = canvas.width
+            for (var i = 0; i < pArr.length; i++) {
+                var p = pArr[i]
+                if (p.x >= canvas.width + p.r) {
+                    p.x = -p.r
+                } else {
+                    p.x += p.speed
+                }
+                c.beginPath()
+                c.fillStyle = p.color//填充颜色
+                // c.strokeStyle=color  描边颜色
+                c.arc(p.x, 100, p.r, 0, 2 * Math.PI, true)
+                c.fill()
+                // c.stroke()
+                c.closePath()
+            }
+
+        }, 30)
+        var canvas2 = document.getElementById("b")
+        var b = canvas2.getContext("2d")
+        //画线
+        b.beginPath()
+        b.moveTo(0, 0)
+        b.lineTo(100, 100)
+        b.lineWidth = 10  //线宽
+        b.closePath()  //闭合画线
+        b.stroke()
+        //画文本
+        var x = canvas2.width
+        setInterval(function () {
+            canvas2.width = canvas2.width //清除整个画布  context.clearRect(0,0,canvas.width,canvas.height)
+            b.font = "30px Arial"
+            x--
+            b.fillText("瘟疫快过去吧", x, 100)   //绘制填充字体定位是左下角坐标
+            //b.strokeText()  绘制描边字体
+        }, 10)
+        //画矩阵
+        // b.fillRect(0,0,100,100)
+        //擦除指定区域
+        // context.clearRect(x,y,width,height)
+        //在画布上加载图像
+        var img = new Image()
+        img.src = "url"
+        img.onload = function () {  //图片成功加载
+            // context.drawImage(image,50,50)
+            // context.drawImage(image,x,y,imgwidth,imgheight)
+        }
+        //图像裁减
+        //context.drawImage(image, source_x, source_y, source_width, source_height, x, y, width, heigh);
+        // image：源图像对象
+        // source_x：源图像的裁剪区原点横坐标
+        // source_y：源图像的裁剪区原点纵坐标
+        // source_width：源图像的裁剪区宽度
+        // source_height：源图像的裁剪区高度
+        // x：在画布上绘制图像的原点横坐标
+        // y：在画布上绘制图像的原点纵坐标
+        // width：在画布上绘制图像的宽度
+        // heigh：在画布上绘制图像的高度
+    </script>
+</body>
+
+</html>

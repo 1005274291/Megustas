@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        .d1 {
+            width: 200px;
+            height: 200px;
+            background-color: blue;
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="d1"></div>
+    <script>
+        d1 = document.getElementsByClassName("d1")[0]
+        var position = {
+            up: 0,
+            left: 0
+        }
+        var up = function () {
+            position.up -= 20
+            d1.style.top = position.up + "px"
+        }
+        var left = function () {
+            position.left -= 20
+            d1.style.left = position.left + "px"
+        }
+        var bottom = function () {
+            position.up += 20
+            d1.style.top = position.up + "px"
+        }
+        var right = function () {
+            position.left += 20
+            d1.style.left = position.left + "px"
+        }
+        var handlePress = function(event){
+            console.log(event.key)
+            switch(event.key){
+                case "w":
+                up()
+                break
+                case "a":
+                left()
+                break
+                case "s":
+                bottom()
+                break
+                case "d":
+                right()
+                break
+                default:
+                break
+            }
+        }
+        document.addEventListener("keypress",handlePress)
+    </script>
+</body>
+
+</html>
