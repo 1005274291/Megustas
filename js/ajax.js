@@ -5,7 +5,7 @@ td_1.innerHTML = '名字'
 var td_2 = document.createElement('th')
 td_2.innerHTML = '号码'
 var td_3 = document.createElement('th')
-td_3.innerHTML = '操作' 
+td_3.innerHTML = '操作'
 trHead.appendChild(td_1)
 trHead.appendChild(td_2)
 trHead.appendChild(td_3)
@@ -13,33 +13,33 @@ trHead.appendChild(td_3)
 var tbody = document.getElementById('table-body')
 tbody.appendChild(trHead)
 var fillData = function (dataArr) {
-    tbody.innerHTML = '' 
-    tbody.appendChild(trHead) 
+    tbody.innerHTML = ''
+    tbody.appendChild(trHead)
     dataArr.reverse()
     for (var i = 0; i < dataArr.length; i++) {
-    	var item=dataArr[i]
-    	var name=item.name
-    	var phoneNumber=item.PhoneNumber
+        var item = dataArr[i]
+        var name = item.name
+        var phoneNumber = item.PhoneNumber
         var tr = document.createElement('tr')
         var td_1 = document.createElement('td')
         td_1.innerHTML = dataArr[i].name
         var td_2 = document.createElement('td')
         td_2.innerHTML = dataArr[i].phoneNumber
         var td_3 = document.createElement('td')
-        var a = document.createElement('a') 
-        a.href = 'tel:' + dataArr[i].phoneNumber 
-        a.innerHTML = '拨号给 - ' + dataArr[i].name 
-        var button=document.createElement("button")
-        button.innerHTML="删除"
+        var a = document.createElement('a')
+        a.href = 'tel:' + dataArr[i].phoneNumber
+        a.innerHTML = '拨号给 - ' + dataArr[i].name
+        var button = document.createElement("button")
+        button.innerHTML = "删除"
         td_3.appendChild(a)
         td_3.appendChild(button)
-        button.setAttribute("data-_id",item._id)
-        button.addEventListener("click",function(){
-        	console.log(this.getAttribute("data-_id"))
-        	remove(this.getAttribute("data-_id"))
+        button.setAttribute("data-_id", item._id)
+        button.addEventListener("click", function () {
+            console.log(this.getAttribute("data-_id"))
+            remove(this.getAttribute("data-_id"))
         })
-        
-        
+
+
         tr.appendChild(td_1)
         tr.appendChild(td_2)
         tr.appendChild(td_3)
@@ -53,7 +53,7 @@ var getAllContact = function () {
     xhr.send()
     xhr.onreadystatechange = function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
-            var result = xhr.response 
+            var result = xhr.response
             var arr = JSON.parse(result)
             console.log(arr)
             fillData(arr)
@@ -93,7 +93,7 @@ confirmButton.addEventListener('click', function () {
         if (xhr.readyState == 4 && xhr.status == 200) {
             var result = JSON.parse(xhr.response)
             if (result.code == 200) {
-      
+
                 addContactWrap.className = ''
                 getAllContact()
             } else {
@@ -103,38 +103,48 @@ confirmButton.addEventListener('click', function () {
     }
 })
 var searchInput = document.getElementById('search')
-        searchInput.addEventListener('input',function(){
-            console.log(this.value)
-            search(this.value)
-        })
+searchInput.addEventListener('input', function () {
+    console.log(this.value)
+    search(this.value)
+})
 
 
-        var search = function(key){
-            var xhr = new XMLHttpRequest()
-            xhr.open('GET','http://skipper.fun/pb/search?key=' + key , true)
-            xhr.send()
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState == 4 && xhr.status == 200){
-                    console.log(xhr.response)
-                    var result = JSON.parse(xhr.response)
-                    if(result.code == 200){
+var search = function (key) {
+    var xhr = new XMLHttpRequest()
+    xhr.open('GET', 'http://skipper.fun/pb/search?key=' + key, true)
+    xhr.send()
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.response)
+            var result = JSON.parse(xhr.response)
+            if (result.code == 200) {
 
-                        fillData(result.result)
-                    }
-                }
+                fillData(result.result)
             }
         }
-var remove=function(id){
-	var xhr=new XMLHttpRequest()
-	xhr.open("GET","http://skipper.fun/pb/removeContact?_id="+id,true)
-	xhr.send()
-	xhr.onreadystatechange=function(){
-		if(xhr.readyState==4&&xhr.status==200){
-			console.log(xhr.response)
-			var result=JSON.parse(xhr.response)
-			if(result.code==200){
-				getAllContact()
-			}
-		}
-	}
+    }
 }
+var remove = function (id) {
+    var xhr = new XMLHttpRequest()
+    xhr.open("GET", "http://skipper.fun/pb/removeContact?_id=" + id, true)
+    xhr.send()
+    xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+            console.log(xhr.response)
+            var result = JSON.parse(xhr.response)
+            if (result.code == 200) {
+                getAllContact()
+            }
+        }
+    }
+}
+
+// var xhr = new XMLHttpRequest()
+// xhr.open("POST", "/login", true)
+// xhr.setRequestHeader("Content-Type", "text/json")
+// xhr.send(JSON.stringify({ username: "111", password: "222" }))
+// xhr.onreadystatechange = function () {
+//     if (xhr.readyState == 4 && xhr.status == 200) {
+//         console.log(xhr.response)
+//     }
+// }

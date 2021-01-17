@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        * {
+            margin: 0px;
+            padding: 0px;
+        }
+
+        li {
+            cursor: pointer;
+        }
+
+        body {
+            background-color: beige;
+        }
+
+        ul {
+            list-style: none;
+            width: 100%;
+            height: 400px;
+            margin: 100px auto;
+        }
+
+        li {
+            height: 400px;
+            width: 20%;
+            margin-left: 70px;
+            background-color: white;
+            float: left;
+            overflow: hidden;
+            box-shadow: 0px 10px 10px rgba(0, 0, 0, .2);
+            transition: .3s linear;
+        }
+
+        .red {
+            height: 30px;
+            width: 80px;
+            margin: 0 auto;
+            background-color: red;
+            color: white;
+            line-height: 30px;
+            text-align: center;
+        }
+
+        .img {
+            width: 100%;
+            height: 200px;
+            margin-top: 30px;
+        }
+
+        .text {
+            height: 130px;
+            width: 100%;
+            /* background-color: red; */
+            margin-top: 6px;
+
+        }
+
+        .span1 {
+            height: 20px;
+            width: 100%;
+            text-align: center;
+            line-height: 25px;
+            font-size: 18px;
+            display: inline-block;
+        }
+
+        .p1 {
+            font-size: 12px;
+            text-align: center;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .span2 {
+            display: inline-block;
+            height: 15px;
+            width: 100%;
+            text-align: center;
+            color: red;
+            margin-top: 15px;
+            font-size: 14px;
+        }
+
+        del {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .display {
+            height: 80px;
+            width: 100%;
+            background-color: red;
+            transition: .3s linear;
+            padding: 15px 15px;
+            box-sizing: border-box;
+        }
+
+
+        li:hover .display {
+            transform: translateY(-80px);
+
+        }
+
+        li:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 10px 13px rgba(0, 0, 0, 0.7);
+
+        }
+
+        .p2 {
+            font-size: 14px;
+            color: white;
+            text-align: center;
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <ul>
+
+
+        <a href="./day15.html">
+            <li class="i1">
+                <div class="red">劳力士</div>
+                <img src="./img/1.jpg" alt="" class="img">
+                <div class="text">
+                    <span class="span1">庄重、实用、不显浮华</span>
+                    <p class="p1">奥尼尔曾一次送给队友们24块Rolex</p>
+                    <span class="span2">炒作太严重 <del>根本买不起</del> </span>
+                </div>
+                <div class="display">
+                    <p class="p2">来看下枯燥且乏味的有钱人带什么样的手表</p>
+                </div>
+            </li>
+        </a>
+
+        <a href="./day15.html">
+            <li class="i2">
+
+                <div class="red">百达翡丽</div>
+                <img src="./img/2.jpg" alt="" class="img">
+                <div class="text">
+                    <span class="span1"> 哲学、重质不重量、细工慢活</span>
+                    <p class="p1">是瑞士仅存的真正的独立制表商之一</p>
+                    <span class="span2">限量买不到 <del>看都不敢看</del> </span>
+                </div>
+                <div class="display">
+                    <p class="p2">来看下奢华的成功人士带什么样的手表</p>
+                </div>
+
+            </li>
+        </a>
+
+        <a href="./day15.html">
+            <li class="i3">
+
+                <div class="red">江诗丹顿</div>
+                <img src="./img/3.jpg" alt="" class="img">
+                <div class="text">
+                    <span class="span1"> 追求完美、艺术、严谨 </span>
+                    <p class="p1">世界最古老最早的钟表制造厂</p>
+                    <span class="span2">假表太多了 <del>真的买比起</del> </span>
+                </div>
+                <div class="display">
+                    <p class="p2">来看下中国大使带过什么样的手表</p>
+                </div>
+
+
+            </li>
+        </a>
+
+        <a href="./day15.html">
+            <li class="i4">
+
+                <div class="red">爱彼</div>
+                <img src="./img/4.jpg" alt="" class="img">
+                <div class="text">
+                    <span class="span1"> 墨守成规、精密、复杂 </span>
+                    <p class="p1">是世界著名三大制表品牌之一</p>
+                    <span class="span2"> 太方了~ <del>咋就没啥缺点</del> </span>
+                </div>
+                <div class="display">
+                    <p class="p2">来看下听说过没买过手表吧</p>
+                </div>
+
+
+            </li>
+        </a>
+    </ul>
+
+
+
+
+</body>
+
+</html>

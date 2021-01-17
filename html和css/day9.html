@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: gray;
+        }
+        .wrap{
+            width: 234px;
+            height: 300px;
+            padding: 20px 0px;
+            box-sizing: border-box;
+            background-color: white;
+            transition: all .2s;
+        }
+        .wrap:hover{
+            box-shadow:0px 15px 30px rgba(0, 0, 0, 0.1) ;
+            margin-top: -2px;
+        }
+        .wrap .intro-img{
+            width: 160px;
+            height: 160px;
+            display: block;
+            margin: 0px auto;
+            margin-bottom: 24px;
+        }
+        .wrap a{
+            color:rgb(51, 51, 51) ;
+            font-size: 14px;
+            width: 100%;
+            display: block;
+            text-align: center;
+            text-decoration: none;
+            margin-bottom: 2px;
+        }
+        .wrap .desc{
+            color: rgb(176, 176, 176);
+            font-size: 12px;
+            text-align: center;
+            margin-top: 0px;
+            margin-bottom: 10px;
+        }
+        .wrap .price .now-price{
+            font-size: 14px;
+            color:#ff6700 ;
+
+        }
+        .wrap .price del{
+            font-size: 14px;
+            color: rgb(176, 176, 176);
+        }
+        .wrap .price{
+            text-align: center;
+            margin-bottom: 14px;
+            font-size: 14px;
+            color: rgb(176, 176, 176);
+        }
+    </style>
+
+</head>
+<body>
+    <div class="wrap">
+        <img class="intro-img" src="https://i8.mifile.cn/b2c-mimall-media/fe64ae837c05d0269d1ba4ac6d818858.jpg" alt="">
+        <a href="">MIX2 全镶钻宇宙霸主尊享版</a>
+        <p class="desc">全面屏10086.0，Unibody全陶瓷</p>
+        <p class="price"><span class="now-price">4299 元</span><del>4699</del>元</p>
+    </div>
+</body>
+</html>

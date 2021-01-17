@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            padding: 0px;
+            margin: 0px;
+        }
+        .d1{
+            width: 100px;
+            height: 200px;
+            padding: 20px;
+            border: 10px groove black;
+            box-sizing: border-box;
+            background-color: blueviolet;
+            /* 线性渐变 */
+            background-image: linear-gradient(to right, red , yellow);
+            /* /*圆形可设置大小的径向渐变
+             background-image: radial-gradient(circle 100px,#000,#ff0000); */ 
+             /*重复的径向渐变*/
+             /* background-image:repeating-radial-gradient(circle 50px,#000,#ff0000); */
+        }
+        .table{
+            display: table;
+            /* table布局 */
+        }
+        /* 网格布局  grid布局 960.gs */
+        .cell{
+            display: table-cell;
+            /* 单元格 */
+            width: 100px;
+            height: 100px;
+            background-color: blue;
+            vertical-align: middle;
+            /* 垂直排列方式 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 元素的覆盖顺序  z-index（position属性不为 static 的元素）>position>后添加>前添加 -->
+    <div class="d1">这是一个盒模型</div>
+    <div class="table">
+        <div class="cell">table布局</div>
+        <div class="cell">table布局</div>
+        <div class="cell">table布局</div>
+    </div>
+</body>
+</html>

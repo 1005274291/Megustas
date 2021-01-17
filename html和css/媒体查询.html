@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- <link rel="stylesheet" type="text/css" href="/example/html/demo_print.css" media="print" />   打印模式下引入-->  
+    <!-- <link rel="stylesheet" href="" media="(min-width:1024px)">  最小宽度为1024px时有效 -->
+    <title>Document</title>
+    <style>
+        .d1{
+            height: 100px;
+            background-color: black;
+        }
+        .d2{
+            background-color: deepskyblue;
+            height: 100px;
+        }
+        @media only screen and (min-width: 100px) and (max-width: 640px){
+            .col-s-1{
+                width: 25%;
+                float: left;
+            }
+            .col-s-2{
+                width: 50%;
+                float: left;
+            }
+            .col-s-3{
+                width: 75%;
+                float: left;
+            }
+            .col-s-4{
+                width: 100%;
+                float: left;
+            }
+        }@media only screen and (min-width: 640px){
+            .col-l-1{
+                width: 25%;
+                float: left;
+            }
+            .col-l-2{
+                width: 50%;
+                float: left;
+            }
+            .col-l-3{
+                width: 75%;
+                float: left;
+            }
+            .col-l-4{
+                width: 100%;
+                float: left;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="d1 col-l-2 col-s-4">
+
+    </div>
+    <div class="d2 col-l-2 col-s-4">
+
+    </div>
+</body>
+</html>
