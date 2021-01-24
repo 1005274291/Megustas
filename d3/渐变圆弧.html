@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./d3.js" type="text/javascript"></script>
+</head>
+
+<body>
+    <svg width="100%" height="100%" version="1.1" xmlns="http://www.w3.org/2000/svg"
+        xmlns:xlink="http://www.w3.org/1999/xlink">
+        <defs>
+                <!-- A指令
+                　Elliptical Arc，允许不闭合。可以想像成是椭圆的某一段，共七个参数。
+                　RX,RY指所在椭圆的半轴大小
+                　XROTATION指椭圆的X轴与水平方向顺时针方向夹角，可以想像成一个水平的椭圆绕中心点顺时针旋转XROTATION的角度。
+                　FLAG1只有两个值，1表示大角度弧线，0为小角度弧线。
+                　FLAG2只有两个值，确定从起点至终点的方向，1为顺时针，0为逆时针
+                　X,Y为终点坐标 -->
+                <radialGradient id="grad1" cx="50%" cy="50%" r="50%" fx="50%" fy="50%">
+                    <stop offset="0%" style="stop-color:red;
+                stop-opacity:0" />
+                    <stop offset="100%" style="stop-color:rgb(0,0,0);
+                stop-opacity:1" />
+                </radialGradient>
+                <filter id="f1" x="0" y="0" width="600px" height="600px">
+                    <feOffset in="SourceAlpha" dx="10" dy="10" result="offOut"/>
+                    <feGaussianBlur in="offOut" stdDeviation="1" result="blurOut"/>
+                    <feBlend in2="blurOut" mode="normal"/>
+                </filter>
+                <path id="path1" d="M55 20 a20 22 0 0 0 100 20"></path>
+        </defs>
+        <text x="10" y="100" style="fill:url(#grad1)" filter="url(#f1)">
+            <textPath xlink:href="#path1" >I love SVG I love SVG</textPath>
+        </text>
+    </svg>
+</body>
+
+</html>

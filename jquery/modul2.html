@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./jquery-3.5.1.js"></script>
+    <title>Document</title>
+    <style>
+        body {
+            margin: 0px;
+            padding: 0px;
+            background-color: gray;
+        }
+
+        #input {
+            box-sizing: border-box;
+            width: 245px;
+            height: 50px;
+            border: solid rgb(224, 224, 224) 1px;
+            padding: 0px 10px;
+            float: left;
+            outline: none;
+        }
+
+        #submit {
+            box-sizing: border-box;
+            width: 52px;
+            height: 50px;
+            float: left;
+            text-align: center;
+            line-height: 50px;
+            background-color: #fff;
+        }
+
+        .search-wrap {
+            position: relative;
+        }
+
+        .link-wrap {
+            position: absolute;
+            font-size: 12px;
+            height: 100%;
+            line-height: 50px;
+            left: 110px;
+            transition: all .3s;
+            opacity: 1;
+        }
+
+        .link-wrap.hidden {
+            opacity: 0;
+        }
+
+        .result-wrap {
+            position: absolute;
+            left: 0px;
+            top: 50px;
+            width: 245px;
+            background-color: #fff;
+            display: none;
+        }
+
+        .result-wrap.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="search-wrap">
+        <form action="">
+            <input type="text" id="input">
+            <button id="submit">0</button>
+        </form>
+        <div class="link-wrap">
+            <a href="">红米 Note5</a>
+            <a href="">小米 MIX2</a>
+        </div>
+        <div class="result-wrap">
+            <ul class="result-list">
+                <li class="result-item">小米3</li>
+                <li class="result-item">小米平衡车</li>
+            </ul>
+        </div>
+    </div>
+    <script>
+        $("#input").on("focus", function () {
+            $(".link-wrap").addClass("hidden")
+            $(".result-wrap").addClass("active")
+            $(this).css("border-color", "#ff6700")
+            $("#submit").css("border-color", "#ff6700")
+            return false //既阻止默认事件，又阻止事件冒泡
+        }).on("blur", function () {
+            $(".link-wrap").removeClass("hidden")
+            $(".result-wrap").removeClass("active")
+            $(this).css("border-color", "rgb(224,224,224)")
+            $("#submit").css("border-color", "rgb(224,224,224)")
+        })
+        $.each([1, 2, 3], function (i, n) {
+            console.log("Item #" + i + ": " + n);
+        });
+        $.each({ name: "John", lang: "JS" }, function (i, n) {
+            alert("Name: " + i + ", Value: " + n);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery-3.5.1.js"></script>
+    <style>
+        .d1 {
+            width: 300px;
+            height: 300px;
+            background-color: rosybrown;
+        }
+        #d2{
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <div class="d1"></div>
+        <div class="d1"></div>
+        <div id="d2"></div>
+    </div>
+    <img src="../node/public/1.jpg" alt="">
+    <script>
+        $(".d1").on("click", function () {
+            $(this).css("background-color", "red").html("<h1>好</h1>")
+        })
+        $(".d1").eq(0).remove()//eq返回的是jq对象
+        $(".d1").addClass('sb')
+        $(".d1").removeClass("d1")
+        // $(".d1").hide()  将d1类得元素隐藏  $(".d1").show()  将d1类得元素展示 
+        $(".sb").toggleClass("d1")
+        $(".d1").attr("index", 1)
+        console.log($(".d1").attr("index"))
+        console.log($("img")[0].src)//[0]返回的是DOM对象
+        $(".d1").parent()//获取一个父元素
+        $(".d1").parents()//获取多个父元素 .eq(0)获取父节点 .eq(1) 获取爷爷节点
+        $(".d1").siblings()//获取多个兄弟元素
+        $(".d1").children()//获取子元素
+        $(".d1").find("*")//获取所有子孙元素
+        $("<div>1</div><div>2</div>").prependTo(document.body)//向body添加元素
+        //prepend/prependTo 在节点内的开头添加节点
+        //append/appendTo  在节点内的末尾添加节点
+        //after/insertAfter 在节点后添加节点
+        //before/insertBefore 在节点前添加节点
+        //empty  删除子元素节点
+        //remove 删除子元素节点包括自己
+        // $.ajax({
+        //     type: "GET",
+        //     url: "http://baidu.com/s",
+        //     data: "",
+        //     success: function (data) {
+
+        //     },
+        //     beforeSend:function(xhr){
+        //         xhr.setRequestHeader("Content-Type", "text/json")
+        //     }
+        // })
+        // element.offset() 返回匹配元素相对于文档的偏移（位置）{left,top}
+        //outerHeight()/outerWidth()  包含padding和border  如果outerHeight(true)/outerWidth(true) 包含margin
+        //innerHeight()/innerWidth()  包含padding
+        //width()/height() 元素的宽高
+    </script>
+</body>
+
+</html>

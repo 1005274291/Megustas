@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="app"></div>
+    <button id="btn">改变</button>
+    <script>
+        //设置缓存
+        let toProxy=new WeakMap() //原始对象=》响应式对象
+        let toRaw =new WeakMap() //响应式对象=》原始对象
+
+        let effectStack=[]//存储effect的地方
+        let targetMap=new WeakMap()//{target:depMap{key:set()}}
+        function track(target,key){
+            //收集依赖
+            const effect=effectStack[effectStack.length-1]
+            //找到最新的effect
+            if(effect){
+                let depMap=targetMap.get(target)
+                if(!depMap){
+                    depMap=new Map()
+                    targetMap.set(target,depMap)
+                }
+                let dep=depMap.get(key)
+                if(!dep){
+                    dep=new Set()
+                    depMap.set(key,dep)
+                }
+                //双向存储 dep是key依赖的集合
+                if(!dep.has(effect)){
+                    dep.add(effect)
+                    effect.deps.push(dep)
+                }
+            }
+        }
+        function trigger(target,key,info){
+            //触发更新
+            //寻找依赖effect
+            const depMap=targetMap.get(target)
+            if(!depMap){
+                //没有依赖
+                return
+            }
+            const effects=new Set()
+            const computedRunners=new Set()
+            if(key){
+                let deps=depMap.get(key)
+                //deps里面全部是effect
+                deps.forEach(effect=>{
+                    if(effect.computed){
+                        computedRunners.add(effect)
+                    }else{
+                        effects.add(effect)
+                    }
+                })
+            }
+            console.log(effects,computedRunners)
+            effects.forEach(effect=>effect())
+            computedRunners.forEach(computed=>computed())
+        }
+        function effect(fn,options={}){
+            //其实就是往effectStack push了一个effect函数，执行fn
+            //处理options
+            let e =createReactiveEffect(fn,options)//构造effect
+            if(!options.lazy){
+                e()
+            }
+            return e
+        }
+
+        function createReactiveEffect(fn,options){
+            const effect = function effect(...args){
+                return run(effect,fn,args)
+            }
+            effect.deps=[]//effect的依赖
+            effect.computed=options.computed//是否是计算属性
+            effect.lazy=options.lazy//石否是懒加载
+            return effect
+        }
+        function run(effect,fn,args){
+            if(effectStack.indexOf(effect)===-1){
+                try{
+                    effectStack.push(effect)
+                    return fn(...args)
+                }finally{
+                    effectStack.pop()//为了下一次执行effect
+                }
+            }
+        }
+        function computed(fn){
+            //特殊的effect
+            const runner=effect(fn,{computed:true,lazy:true})
+            return {
+                effect:runner,
+                get value(){
+                    return runner()
+                }
+            }
+        }
+        //响应式代理对象
+        const baseHandle={
+            get(target,key){
+                //收集依赖
+                const res=Reflect.get(target,key)
+                track(target,key)
+                return typeof res=='object'?reactive(res):res
+            },
+            set(target,key,val){
+                const res=Reflect.set(target,key,val)
+                //触发更新
+                trigger(target,key,{oldValue:target[key],newValue:val})
+                return res
+            }
+        }
+        //响应式
+        function reactive(target){
+            //查询缓存
+            let observed =toProxy.get(target)
+            if(observed){
+                //如果已经被响应式处理过了
+                return observed
+            }
+            //如果没有被响应式处理
+            observed=new Proxy(target,baseHandle)
+            if(toRaw.get(observed)){
+                //如果原始对象已经被缓存
+                return observed
+            }
+            //设置缓存
+            toProxy.set(target,observed)
+            toRaw.set(observed,target)
+            return observed
+        }
+
+
+
+        var root=document.getElementById("app");
+        var btn =document.getElementById('btn');
+        const obj=reactive({
+            age:18,
+            name:'jun'
+        })
+        //compute也是用effect实现的
+        let double=computed(()=>obj.age*2)
+        effect(()=>{
+            //数据变化触发set，执行这个函数
+            root.innerHTML=`<h1>${obj.name}今年${obj.age}以后${double.value}</h1>`
+        })
+        btn.addEventListener('click',function(){
+            //触发set,执行effect
+            obj.age+=1
+        },false);
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>20172906 姜军</title>
+    <script src="./d3.js"></script>
+</head>
+<body>
+    <script>
+        var width=400;
+        var height=400
+        var dataset=[30,10,43,55,13]
+        var svg=d3.select("body").append("svg").attr("width",width).attr("height",height)
+        var pie=d3.layout.pie()//饼图生成器
+        var piedata=pie(dataset)
+        var outerRadius=150;  //外半径
+        var innerRadius=0       //内半径
+        var arc=d3.svg.arc()  //弧生成器
+        .innerRadius(innerRadius).outerRadius(outerRadius)
+        var color=d3.scale.category10()//选10个颜色
+        var arcs=svg.selectAll("g")
+                .data(piedata)
+                .enter()
+                .append("g")
+                .attr("transform","translate("+(width/2)+","+(height/2)+")")
+        arcs.append("path")
+            .attr("fill",function(d,i){
+                return color(i)
+            })
+            .attr("d",function(d){
+                return arc(d)
+            })
+        arcs.append("text")
+            .attr("transform",function(d){
+                return "translate("+arc.centroid(d)+")"
+            })
+            .attr("text-anchor","middle")
+            .text(function(d){
+                return d.data
+            })
+    </script>
+</body>
+</html>

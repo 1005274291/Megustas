@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <my-button></my-button>
+        <your-button></your-button>
+    </div>
+    <script>
+        //全局注册组件
+        Vue.component("myButton", {
+            data: function () {
+                return {
+                    count: 0
+                }
+            },
+            template: "<button @click='handleClick'>{{count}}</button>",
+            methods: {
+                handleClick: function () {
+                    this.count += 1
+                }
+            }
+        })
+        var vm = new Vue({
+            el: "#app",
+            data: {},
+            methods: {},
+            // 局部注册组件
+            components: {
+                "your-button": {
+                    data: function () {
+                        return {
+                            count: 0
+                        }
+                    },
+                    template: "<button @click='handleClick'>{{count}}</button>",
+                    methods: {
+                        handleClick: function () {
+                            this.count += 1
+                        }
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

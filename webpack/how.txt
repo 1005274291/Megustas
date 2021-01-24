@@ -1,0 +1,92 @@
+1.npm init -y 创建一个默认的脚手架文件
+rm -rf filename 删除文件
+2.npm install webpack webpack-cli webpack-dev-server html-webpack-plugin clean-webpack-plugin style-loader css-loader file-loader--save-dev
+3.创建./src并且在里面创建源文件index.js
+4.开始编写cnpm i jquery,import到index.js
+5.npx webpack,将会在./dist把编译结果输出为main.js
+6../dist/index中引入./dist/main.js
+
+
+vue加载的包
+vue-loader 
+vue-template-compiler
+
+开发的包
+vue
+
+src
+main.vue
+
+src/index.js
+render
+
+webpack优点
+1.自动分析依赖，将很多文件(打包)
+2.充当翻译官 兼容es6 typescript等浏览器看不懂的代码 loader
+3.很多实际应用当中的插件 plugin
+4.灵活性强 可随意配置
+
+webpack打包原理 
+将模块打包成立即执行函数 用字母代替变量 入参是模块的代码和依赖模块组成的数组 
+1.从入口文件开始，分析整个应用的依赖树
+2.将每个依赖模块包装起来，放到一个数组中等待调用
+3.实现模块加载方法，并把它放到模块执行的环境中，确保模块间可以互相调用
+4.把执行入口文件的逻辑放在一个函数表达式中，并立即执行这个函数
+
+npm install --only=prod 指定生产环境的包
+npm install --only=dev 指定开发环境的包
+
+
+语义化版本^version ^3.4.1 表示下载中版本和小版本中最新的~version ~3.4.1 表示下载小版本中最新的
+{
+  "name": "webpack",//包名称
+  "version": "1.0.0",//版本号
+  "description": "",//描述
+  "main": "index.js",//执行入口
+  "scripts": {//自定义脚本命令功能
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "npx webpack",
+    "watch": "npx webpack --watch",
+    "start": "npx webpack-dev-server --open" //webpack开发服务器
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {//生产环境依赖 --save
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.1.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.4.2",
+    "file-loader": "^5.1.0",
+    "html-webpack-plugin": "^3.2.0",
+    "less": "^3.11.1",
+    "less-loader": "^5.0.0",
+    "style-loader": "^1.1.3",
+    "webpack": "^4.42.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  },
+  "dependencies": {// 开发环境依赖 --dev
+    "jquery": "^3.4.1",
+    "url": "^0.11.0"
+  }
+}
+
+
+cnpm install @babel/core @babel/cli -g  安装babel
+cnpm install @babel/preset-env(es6->es5) @babel/preset-react(jsx->js)  babel包转码规则
+cnpm install @babel/plugin-proposal-class-properties 支持class类
+babel test.js --presets=@babel/preset-env 对test.js进行转码
+new webpack.HotModuleReplacementPlugin()  热更新
+cnpm i webpack-bundle-analyzer  分析打包情况的
+
+
+让webpack打包支持ES7的async/await语法
+npm install --save-dev babel-plugin-transform-runtime
+npm install --save babel-runtime
+
+{
+  "plugins": ["transform-runtime", "babel-plugin-transform-regenerator", "babel-plugin-transform-es2015-modules-commonjs"]
+}

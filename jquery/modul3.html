@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./jquery-3.5.1.js"></script>
+    <script>
+        window.onload = function () {
+            $('#btn1').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                var result = reg.test(content);
+                console.log(result)
+                $('#result').html(result)
+            })
+            $('#btn2').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                var result;
+                var str= '';
+                while (result = reg.exec(content)) {
+                    str += result + '\n';
+                }
+                $("#result").html(str)
+            }) 
+            $('#btn3').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                $('#result').html(content.search(reg))
+
+            }) 
+            $('#btn4').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                var result=content.match(reg)
+                result=result.join("-")
+                $('#result').html(result)
+            })
+            $('#btn5').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                $('#result').html(content.replace(reg, '*'))
+            }) 
+            $('#btn6').on("click",function () {
+                var content = $('#content').val();
+                var exp = $('#exp').val();
+                var reg = eval('/' + exp + '/gi');
+                var result=content.split(reg)
+                result=result.join("-")
+                $('#result').html(result)
+            }) 
+
+        };
+    </script>
+</head>
+
+<body>
+    内容：<input type='text' id='content' size=60><br><br>
+    正则：<input type='text' id='exp' size=40><br><br>
+    结果：<textarea id='result' cols='60' rows='8'></textarea><br><br>
+    <input type='button' id='btn1' value='test'>
+    <input type='button' id='btn2' value='exec'>
+    <input type='button' id='btn3' value='search'>
+    <input type='button' id='btn4' value='match'>
+    <input type='button' id='btn5' value='replace'>
+    <input type='button' id='btn6' value='split'>
+</body>
+<script>
+    // 验证手机号是否有效
+    // var str="13846254854"
+    // var reg=/^13[0-35-9]\d{8}$/gi
+
+    //验证邮箱是否有效
+    // var str="1005274291@qq.com"
+    // var reg=/^[\w\.]+@(\w+\.)+[a-z]{2,4}$/gi
+
+    //验证IP地址是否有效(第一段不能是0，0-255)
+    var str="1.1.1.1"
+    var reg=/^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])(\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])){3}$/
+    if(reg.test(str)){
+        alert("合法")
+    }else{
+        alert("不合法")
+    }
+    var ret=/(jero) love (coding|girl)/.exec("jero love girl")
+    console.log(ret[1],RegExp.$2)//捕获到的第一个分组 和引用
+    var ret2=/<(div)>.*<\/\1>/  //反向引用表示引用第一个分组的匹配
+    //?: 分组不会被捕获(?:)  ？惰性匹配，默认是贪婪匹配
+    ///jero(?=\slove\scoding)/  正向前瞻 前面是jero后面跟着love coding的字符
+    ///jero(?！ love coding)/  负向前瞻 前面是jero后面不跟着love coding的字符
+    //(?= love coding)  匹配位置
+    //http://regex101.com/ 调试正则 /(?=((?!\b)\d{3})+$)/  转换成3位一个逗号
+</script>

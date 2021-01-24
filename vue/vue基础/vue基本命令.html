@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .link{
+            color: red;
+        }
+        .active{
+            border: 1px solid #333333;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 花括号形式的文本未加载完script会呈现花括号的形式，之后显示文本 -->
+        {{title}}
+        <!-- v-text形式的文本未加载完script不会呈现内容，之后显示文本 -->
+        <p v-text="title" :style="[styleObj,isactive? activeStyleObj:'']"></p>
+        <!-- v-html会把传入的值识别为html嵌入标签 -->
+        <p v-html="title"></p>
+        <!-- v-bind用：绑定属性 也可以省略v-bind直接用:href -->
+        <a v-bind:href="url" :class="classObj" class="link">去腾讯首页</a>
+        <a :href="getUrl()">{{getUrl("sn")}}</a>
+        <a :href="gettitle">{{gettitle}}</a>
+        <!-- computed的方法不需要执行 -->
+    </div>
+    <script>
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                title:"hello word!",
+                url:"http://www.qq.com",
+                isactive:true,
+                styleObj:{textDecoration:'underline'},
+                activeStyleObj:{color:"green"}
+            },
+            methods:{//调用多少次执行多少次
+                getUrl:function(hash){
+                    return this.url+hash//this代表vm  箭头函数的this指向外部环境是window
+                }
+            },
+            computed:{//计算属性只会被执行一次，之后的调用结果为第一次执行的结果（依赖属性不变的情况）  适合处理同步的方法
+                gettitle:function(){
+                    return this.url
+                },
+                // gettitle:function(){可以进行传参，，通过gettitle(test)调用
+                //     return function(hash){
+
+                //     }
+                // }
+                url1:{
+                    get:function(){
+                        //访问url1的时候触发
+                    },
+                    set:function(val){
+                        //为url1赋值的时候触发
+                    }
+                },
+                classObj:function(){
+                    return {
+                        //key 是类名 value是判断条件
+                        active:this.isactive
+                    }
+                }
+                
+            },
+            // watch:{//侦听器 适合处理异步操作
+            //     title:{
+            //         immediate:true,//页面一加载完毕立即执行
+            //         deep:true,//深度去遍历对象
+            //         handler:function(newValue,oldValue){
+            //             this.url=newValue+"//"
+            //         }
+
+            //     }
+            // }
+        })
+        //在外部添加侦听器  $的都是实例方法
+        var unwatch= vm.$watch("title",function(newValue,oldValue){
+            this.url=newValue+"//"
+        },{
+            deep:true,
+            immediate:true
+        })
+        unwatch()//销毁侦听器，使title属性以后将不再被侦听
+        //computed和watch都是watcher的实例，new Watcher接收5个参数
+        //1.vm vue的实例 2.表达式或函数 computed会把函数传过来，watch会把键传过来
+        //3.callback computed会传入空函数，watch会把函数传过来
+        //4.options watch的配置项
+        //5.isRenderWacher  计算属性是computedWatcher 侦听器是userWatcher  渲染Vue模板的Watcher 内部方法
+    </script>
+</body>
+</html>

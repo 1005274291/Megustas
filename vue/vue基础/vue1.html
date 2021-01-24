@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="root">
+        <h1>为你喜欢的队伍投票</h1>
+        <p>拜仁无敌：投票数：{{count}}</p>
+        <button v-on:click="vote">投票(5元一次)</button>
+        <div>
+            <ul>
+                <li v-for="item in namelist" @click="handleClick(item)">
+                    {{item.name}}:{{item.msg}}
+                </li>
+            </ul>
+        </div>
+        <small v-if="isonline" style="color: green;">在线</small>
+        <small v-else="isonline" style="color: grey;">离线</small>
+        <button @click="isonline=!isonline">切换在线状态</button>
+        <h1>表单输入绑定</h1>
+        登录：<input type="text" v-model="username">
+    </div>
+    <script>
+        var el = new Vue({
+            el:"#root",//el的值是一个css选择器  容器的根节点
+            data:{
+                count:20,
+                namelist:[
+                    {
+                        _id:0,
+                        name:"姜小军",
+                        msg:"想出去玩了。"
+                    },{
+                        _id:1,
+                        name:"施小雨",
+                        msg:"你去我就不去了！"
+                    }
+                ],
+                isonline:false,
+                username:""
+            },
+            methods:{
+                vote:function(){
+                    this.count=this.count+1
+                },
+                handleClick:function(e){
+                    console.log(e._id)
+                }
+            }
+        })
+    </script>
+</body>
+</html>

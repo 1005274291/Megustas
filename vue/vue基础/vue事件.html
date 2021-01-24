@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        .outer{
+            width: 300px;
+            height: 300px;
+            background-color: royalblue;
+        }
+        .inner{
+            width: 100px;
+            height: 100px;
+            background-color: rosybrown;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="decrement">-</button>
+        <span>{{count}}</span>
+        <button v-on:click="increment(5,$event)">+</button>
+        <div class="outer" @click="OuterClick">
+            <!-- @click.stop阻止事件冒泡 .self 当event.target是自身的时候才会执行 .prevent阻止浏览器默认行为-->
+            <!-- .capture 是在捕获阶段执行 .once只执行一次 .passive 告诉浏览器我们的滚动是一个主动的过程，不需要执行回调函数后判断 -->
+            <div class="inner" @click.stop="innerClick">
+            </div>
+        </div>
+        <input type="text" v-model="count">
+        <!-- 实现数据的双向绑定 绑定input的value v-model.trim会去除前后的空格 .number会将输入的数字以number的数据类型呈现 而不是字符串 .lazy会监听change事件而不是input事件会在失焦后进行改变 -->
+        <!-- 相当于 -->
+        <input type="text" :value="count" @input="handleInput">
+        <input type="checkbox" v-model="isChecked" :checked='true' true-value="选中" false-value="未选中">
+        <p>{{isChecked}}</p>
+        <!-- 复选框组时传入v-model的是一个数组 isChecked数据显示的是input标签的value -->
+        <select name="" id="" multiple v-model="arr">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+        </select>
+        <p>{{arr}}</p>
+        <input type="file" @change="handleChange">
+        <p>{{file}}</p>
+    </div>
+    <script>
+        var vm=new  Vue({
+            el:"#app",
+            data:{
+              count:0,
+              isChecked:"选中",
+              arr:[],
+              file:null
+            },
+            methods:{
+                increment:function(step,event){
+                    this.count+=5
+                    console.log(event)
+                },
+                decrement:function(){
+                    this.count--
+                },
+                innerClick:function(){
+                    console.log("inner")
+                },
+                OuterClick:function(){
+                    console.log("outer")
+                },
+                handleInput:function(event){
+                    this.count=event.target.value
+                },
+                handleChange:function(event){
+                    this.file=event.target.files[0]
+                }
+            }
+        })
+    </script>
+</body>
+</html>

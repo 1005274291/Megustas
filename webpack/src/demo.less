@@ -1,0 +1,14 @@
+@blue:#188eee;
+.box-shadow(@x: 0; @y: 0; @blur: 1px; @color: #000) {
+    -webkit-box-shadow: @arguments;
+       -moz-box-shadow: @arguments;
+            box-shadow: @arguments;
+  }
+body{
+    .text{
+        font-weight: 900;
+        color:@blue;
+        .box-shadow(2px; 5px);
+    } 
+}
+// sass调试网站 sassmeister.com

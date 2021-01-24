@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- v-if和v-else要是同级元素  v-if会缓存渲染实例不会让else从头渲染 例如input标签中的value 设置key值可以从新渲染 -->
+        <p v-if="isShow" key="1">v-if</p>
+        <!-- v-if判断条件不满足的情况下不会插入dom（动态增删节点） v-show 会以display:none 的形式将元素插入dom （css控制）-->
+        <p v-else key="2">v-else</p>
+        <!-- v-show 会在template中失效 v-if不会失效 -->
+        <p v-show="isShow">v-show</p>
+        <!-- 遍历数组 -->
+        <ul>
+            <li v-for="(book,index) in books">{{index}}-{{book.name}}</li>
+        </ul>
+        <!-- 遍历对象 -->
+        <p v-for="(value,key,index) in person">{{key}}:{{value}}-{{index}}</p>
+        <!-- 模板渲染 -->
+        <template v-for="book in books">
+            <p>{{book.id}}</p>
+            <p>{{book.name}}</p>
+        </template>
+        
+    </div>
+    <script>
+        var vm=new  Vue({
+            el:"#app",
+            data:{
+                isShow:true,
+                person:{
+                    name:"jun",
+                    age:18,
+                    sex:"男"
+                },
+                books:[
+                    {
+                        id:0,
+                        name:"Javascript从入门到放弃"
+                    },
+                    {
+                        id:1,
+                        name:"Java从入门到脱发"
+                    },
+                    {
+                        id:2,
+                        name:"Mysql从删库到跑路"
+                    }
+                ]
+            }
+        })
+    </script>
+</body>
+</html>

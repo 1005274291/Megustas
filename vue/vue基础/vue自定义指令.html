@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <h1 v-long-press:name="{
+            callback:handleLongPress,
+            role:'test指令',
+            duration:500
+        }">test指令</h1>
+        <button v-text>指令生命周期</button>
+        <p>{{price|current('RMB')}}</p>
+    </div>
+    <script>
+        Vue.directive("long-press",function(el,bindings,vnode){
+            // console.log(el)
+            console.log(bindings)
+            // console.log(vnode)
+            var timer=null
+            var xiushifuobj=bindings.modifiers//修饰符对象v-long-press.foo.bar {foo:true,bar:true}
+            var arg=bindings.arg//参数 v-long-press:foo中得foo
+            var value=bindings.value//表达式最后的值
+            var duration=value.duration||1700
+            var fn=value.callback
+            var that=this
+            el.addEventListener("touchstart",run)
+            el.addEventListener("touchend",stop)
+            el.addEventListener("touchmove",stop)
+            function run(){
+                if(timer==null){
+                    timer=setTimeout(function(){
+                        fn&&fn.call(that,el,value)
+                        clearTimeout(timer)
+                    },duration)
+                }
+            }
+            function stop(){
+                clearTimeout(timer)
+                timer=null
+            }
+        })
+        Vue.directive("text",{
+            bind:function(el,bindings,vnode){
+                //绑定初始化
+            },
+            inserted:function(el,bindings,vnode){
+                //插入可以获取到父级的dom元素
+            },
+            update:function(el,bindings,vnode){
+                //更新前
+            },
+            componentUpdated:function(el,bindings,vnode){
+                //更新后
+            },
+            unbind:function(el,bindings,vnode){
+                //解除绑定
+            }
+        })
+        var vm=new Vue({
+            el:"#app",
+            data:{
+                price:15
+            },
+            directives:{
+                test:{}
+            },
+            filters:{
+                current(value,symbol="$"){
+                    return symbol+value
+                }
+
+            },
+            methods:{
+                handleLongPress:function(el,value){
+                    console.log(value)
+                    alert(value.role)
+                }
+            }
+        })
+    </script>
+</body>
+</html>
