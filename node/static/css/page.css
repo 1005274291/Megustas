@@ -1,0 +1,13 @@
+body{
+    margin: 0px;
+}
+.nav{
+    padding: 10px 0px;
+    box-sizing: border-box;
+    padding-left: 20px;
+    background-color: black;
+    color: blanchedalmond;
+}
+.wrap{
+    padding: 20px;
+}

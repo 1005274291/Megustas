@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+    <style>
+        .wrap-wrap {
+            position: relative;
+        }
+
+        .right-wrap {
+            width: 100%;
+            min-height: 600px;
+            position: absolute;
+            display: none;
+        }
+
+        .right-wrap.active {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>博客系统后台管理程序</h1>
+        </div>
+        <div class="col-lg-3">
+            <ul class="nav nav-pills nav-stacked">
+                <li role="presentation" class="list-item" data-wrap="zhuye"><a href="#">主页</a></li>
+                <li role="presentation" class="list-item" data-wrap="fabu"><a href="#">发布文章</a></li>
+                <li role="presentation" class="list-item" data-wrap="shenhe" id="check"><a href="#">审核评论</a></li>
+                <li role="presentation" class="list-item"><a href="/">回到首页</a></li>
+            </ul>
+        </div>
+        <div class="col-lg-9 wrap-wrap">
+            <div class="right-wrap" id="zhuye">主页</div>
+            <div class="right-wrap" id="fabu">
+                <form method="POST" action="/admin/uploadpage">
+                    <div class="form-group">
+                        <label for="title">大标题</label>
+                        <input type="text" class="form-control" name="title" placeholder="大标题">
+                    </div>
+                    <div class="form-group">
+                        <label for="author">作者</label>
+                        <input type="text" class="form-control" name="author" placeholder="作者">
+                    </div>
+                    <div class="form-group">
+                        <label for="sort">分类</label>
+                        <input type="text" class="form-control" name="sort" placeholder="分类">
+                    </div>
+                    <div class="form-group">
+                        <label for="intro">简介</label>
+                        <input type="text" class="form-control" name="intro" placeholder="简介">
+                    </div>
+                    <label for="content">内容</label>
+                    <textarea class="form-control" rows="3" name="content"></textarea>
+                    <br>
+                    <button type="submit" class="btn btn-default">发表</button>
+                </form>
+            </div>
+            <div class="right-wrap" id="shenhe">
+            </div>
+        </div>
+    </div>
+    <script>
+        var listitems = $(".list-item")
+        var rightwrap = $(".right-wrap")
+        listitems.on("click", function () {
+            listitems.removeClass("active")
+            $(this).addClass("active")
+            var tag = $(this).attr("data-wrap")
+            rightwrap.removeClass("active")
+            $("#" + tag).addClass("active")
+        })
+        var addlistener = function (_id) {
+            $(".btn-pass").on("click", function () {
+                passcomment($(this).attr("data-_id"))
+            })
+            $(".btn-nopass").on("click", function () {
+                nopasscomment($(this).attr("data-_id"))
+            })
+        }
+        var fillcomment = function (arr) {
+            var html = ""
+            if (arr.length == 0) {
+                $("#shenhe").html("<div class='well'>没有评论需要审核</div>")
+                return
+            }
+            arr.forEach(function (e) {
+                html += `
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">作者：${e.author} 日期：${e.date}</h3>
+                    </div>
+                    <div class="well">
+                        评论的文章标题：${e.f_title}
+                        <br>
+                        评论的文章简介：${e.f_intro}
+                    </div>
+                    <div class="panel-body">
+                        ${e.content}
+                    </div>
+                    <div class="panel-footer">
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" class="btn btn-success btn-pass" data-_id=${e._id}>通过</button>
+
+                            <button type="button" class="btn btn-danger btn-nopass"  data-_id=${e._id}>不通过</button>
+                        </div>
+                    </div>
+                </div>
+                `
+            })
+            $("#shenhe").html(html)
+            addlistener()
+        }
+
+        var getcomment = function () {
+            $.ajax({
+                type: "get",
+                url: "/admin/getcomment",
+                data: {},
+                success: function (e) {
+                    // console.log(e)
+                    fillcomment(e)
+                }
+            })
+
+        }
+        var passcomment = function (_id) {
+            $.ajax({
+                type: "get",
+                url: "/admin/passcomment",
+                data: {
+                    _id: _id
+                },
+                success: function (e) {
+                    // console.log(e)
+                    getcomment()
+                }
+            })
+        }
+        var nopasscomment = function (_id) {
+            $.ajax({
+                type: "get",
+                url: "/admin/nopasscomment",
+                data: {
+                    _id: _id
+                },
+                success: function (e) {
+                    // console.log(e)
+                    getcomment()
+                }
+            })
+        }
+        $("#check").on("click", function () {
+            getcomment()
+        })
+    </script>
+</body>
+
+</html>

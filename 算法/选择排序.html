@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //选择排序的时间复杂度无论最好还是最坏都是O(n²)
+        //空间复杂度是O(1)  稳定性：不稳定
+        function xuanze(arr){
+            var min,temp
+            for(var i=0;i<arr.length-1;i++){
+                min=i
+                for(var j=i+1;j<arr.length;j++){
+                    if(arr[j]<arr[min]){
+                        min=j
+                    }
+                }
+                temp=arr[i]
+                arr[i]=arr[min]
+                arr[min]=temp
+            }
+            return arr
+        }
+        console.log(xuanze([2,8,7,6,3,1]))
+    </script>
+</body>
+</html>

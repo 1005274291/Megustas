@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="../bootstrap-3.3.7-dist/css/bootstrap.css">
+    <script src="../bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1>欢迎来到军少博客</h1>
+            <p>一个让你怀疑人生的博客</p>
+            <p><a class="btn btn-primary btn-lg" href="/" role="button">首页</a></p>
+        </div>
+        <div class="page-header">
+            <h1><%= data.title %> <small><%= data.intro %> </small></h1>
+        </div>
+        <p>
+            分类：<span class="label label-primary"><%= data.sort %> </span>
+        </p>
+        <p>
+            作者：<%= data.author %>
+        </p>
+        <p>
+            日期：<%= data.date %>
+        </p>
+        <div class="well">
+            <!-- content -->
+        </div>
+        <div class="page-header">
+            <h3>评论</h3>
+        </div>
+        <ul class="list-group">
+            <% comment.forEach(function(e){%>
+            <li class="list-group-item">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <strong><%= e.content %></strong>
+                    </div>
+                    <div class="panel-footer">
+                        <%= e.author %> -
+                        <%= e.date %>
+                    </div>
+                </div>
+            </li>
+            <% }) %>
+        </ul>
+        <div class="page-header">
+            <h3>我也想发表评论</h3>
+        </div>
+        <form method="POST" action="/submitcomment?_id=<%= data._id %> " enctype="application/x-www-form-urlencoded">
+            <div class="form-group">
+                <label for="exampleInputEmail1">你的邮箱</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Email" name="email">
+            </div>
+            <div class="form-group">
+                <textarea class="form-control" rows="3" name="content"></textarea>
+            </div>
+            <button type="submit" class="btn btn-default">发表</button>
+        </form>
+    </div>
+</body>
+
+</html>

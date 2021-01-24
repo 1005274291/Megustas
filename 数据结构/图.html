@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var Graph = function () {
+            //存储顶点
+            var vertices = []
+            //边
+            var adjList = {}
+            //1.添加顶点
+            this.addVertex = function (v) {
+                vertices.push(v)
+                adjList[v] = []
+            }
+            //2.添加边
+            this.addEdge = function (a, b) {
+                adjList[a].push(b)
+                adjList[b].push(a)
+            }
+            //打印图
+            this.print = function () {
+                var s = "\n"
+                for (var i = 0; i < vertices.length; i++) {
+                    var dingdian = vertices[i]
+                    s += dingdian + "=>"
+                    var bian = adjList[dingdian]
+                    for (var j = 0; j < bian.length; j++) {
+                        s += bian[j]
+                    }
+                    s += "\n"
+                }
+                return s
+            }
+            //广度优先遍历
+            var Queue = function () {
+                var items = []
+                //入队
+                this.enqueue = function (element) {
+                    items.push(element)
+                }
+                //出队
+                this.dequeue = function () {
+                    return items.shift()
+                }
+                //查看队列头
+                this.front = function () {
+                    return items[0]
+                }
+                //检查队列是否为空
+                this.isEmpty = function () {
+                    return items.length === 0
+                }
+                //队列大小
+                this.size = function () {
+                    return items.length
+                }
+            }
+            var initColor = function () {
+                //white 未发现
+                //grey 已发现未探索
+                //black 已探索
+                var color = {}
+                for (var i = 0; i < vertices.length; i++) {
+                    color[vertices[i]] = "white"
+                }
+                return color
+            }
+            this.bfs = function (v, callback) {
+                var color = initColor()
+                var queue = new Queue()
+                queue.enqueue(v)
+                while (!queue.isEmpty()) {
+                    var now = queue.dequeue()
+                    var bian = adjList[now]
+                    for (var i = 0; i < bian.length; i++) {
+                        var w = bian[i]
+                        // console.log(w,'i顶点有边的顶点')
+                        if (color[w] == "white") {
+                            color[w] = "grey"
+                            queue.enqueue(w)
+                        }
+                    }
+                    color[now] = "black"
+                    if (callback) {
+                        callback(now)
+                    }
+                }
+            }
+            //广度优先的最短路径
+            //d 距离
+            //pred /回溯点
+            var Stack = function () {
+                var items = []//私有栈
+                this.push = function (e) {//栈顶添加元素
+                    items.push(e)
+                }
+                this.pop = function (e) {//栈顶移除元素
+                    return items.pop()
+                }
+                this.peek = function () {//检查栈顶元素
+                    return items[items.length - 1]
+                }
+                this.isEmpty = function () {//检查栈是否为空
+                    return items.length == 0
+                }
+                this.clear = function () {//清除栈
+                    items = []
+                }
+                this.size = function () {
+                    return items.length//获取栈的大小
+                }
+                this.getItems = function () {//返回栈
+                    return items
+                }
+            }
+            this.zuiduan = function (from, to) {//运用广度优先
+                var color = initColor()
+                var queue = new Queue()
+                queue.enqueue(from)
+                var d = {}
+                var pred = {}
+                for (var i = 0; i < vertices.length; i++) {
+                    d[vertices[i]] = 0
+                    pred[vertices[i]] = null
+                }
+                while (!queue.isEmpty()) {
+                    var now = queue.dequeue()
+                    var bian = adjList[now]
+                    for (var i = 0; i < bian.length; i++) {
+                        var w = bian[i]
+                        if (color[w] == "white") {
+                            color[w] = "grey"
+                            pred[w] = now
+                            d[w] = d[now] + 1
+                            queue.enqueue(w)
+                        }
+                    }
+                    color[now] = "black"
+                }
+                var v=to
+                var path=new Stack()
+                while(v!==from){
+                    path.push(v)
+                    v=pred[v]
+                }
+                path.push(v)
+                var str=""
+                while(!path.isEmpty()){
+                    str+=path.pop()+"->"
+                }
+                str=str.slice(0,str.length-2)
+                str=str+"\n"+"distence:"+d[to]
+                return str
+            }
+            var dfsViste=function(u,color,callback){//深度优先
+                color[u]="grey"
+                var bian=adjList[u]
+                for(var i=0;i<bian.length;i++){
+                    var w=bian[i]
+                    if(color[w]=="white"){
+                        dfsViste(w,color,callback)
+                    }
+                }
+                if(callback){
+                    callback(u)
+                }
+            }
+            this.dfs=function(v,callback){
+                var color=initColor()
+                dfsViste(v,color,callback)
+            }
+
+        }
+        var tu = new Graph()
+        tu.addVertex("A")
+        tu.addVertex("B")
+        tu.addVertex("C")
+        tu.addVertex("D")
+        tu.addVertex("E")
+        tu.addVertex("F")
+        tu.addVertex("H")
+        tu.addVertex("M")
+        tu.addVertex("N")
+        tu.addEdge("A", "D")
+        tu.addEdge("B", "D")
+        tu.addEdge("A", "C")
+        tu.addEdge("E", "B")
+        tu.addEdge("E", "C")
+        tu.addEdge("F", "A")
+        tu.addEdge("F", "B")
+        tu.addEdge("H", "A")
+        tu.addEdge("F", "M")
+        tu.addEdge("M", "N")
+        tu.bfs("A",function(a){console.log(a,'广度优先遍历')})
+        console.log(tu.zuiduan('A',"B"),'A到B的最短路径')
+        tu.dfs("A",(a)=>console.log(a,'深度优先遍历'))
+
+    </script>
+</body>
+
+</html>

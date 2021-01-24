@@ -1,0 +1,20 @@
+1.插入数据
+    db.test.insert({
+        name:"军少"，
+        age:20
+    })
+2.查找数据
+    db.test.find({})
+3.删除数据
+    db.test.remove({})//全部删除
+4.修改数据
+    db.test.update[updateMany](
+        {
+            name:"军少"
+        },
+        {
+            $set:{
+                age:30
+            }
+        }
+    )

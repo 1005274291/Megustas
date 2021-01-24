@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- window.name+iframe 代理跨域 -->
+    <script type="text/javascript">
+        //请求页面
+        var boo = false;
+        var iframe = document.createElement('iframe');
+        var loadData = function () {
+            if (boo) {
+                var data = iframe.contentWindow.name;    //获取window.name
+                console.log(data);
+                //销毁数据   
+                iframe.contentWindow.document.write('');
+                iframe.contentWindow.close();
+                document.body.removeChild(iframe);
+            } else {
+                boo = true;
+                iframe.contentWindow.location = "b.html";    // 设置的代理文件,iframe重新载入
+            }
+        };
+        iframe.src = 'https://xxx.github.io/xxx';
+        if (iframe.attachEvent) {
+            iframe.attachEvent('onload', loadData);
+        } else {
+            iframe.onload = loadData;
+        }
+        document.body.appendChild(iframe);
+        
+        //数据页面
+        window.name = 'I was there!';    // 这里是要传输的数据，大小一般为2M，IE和firefox下可以大至32M左右
+            // 数据格式可以自定义，如json、字符串
+    </script>
+    <!-- jsonp跨域 -->
+    <script>
+        //请求页面
+        function addScriptTag(src) {
+            var script = document.createElement('script');
+            script.setAttribute("type", "text/javascript");
+            script.src = src;
+            document.body.appendChild(script);
+        }
+
+        window.onload = function () {
+            addScriptTag('http://example.com/ip?callback=foo');
+        }
+
+        function foo(data) {
+            console.log('response data: ' + JSON.stringify(data));
+        };
+        //数据页面
+        foo({
+            "test": "testData"
+        });                     
+    </script>
+    <script>
+        //CORS跨域 客户端通过url携带参数请求服务器，服务器识别参数为客户端设置请求头
+        // "Access-Control-Allow-Origin:http://127.0.0.1:3001"
+        //res.setHeader("Access-Control-Allow-Origin","http://127.0.0.1:3001")
+    </script>
+</body>
+
+</html>

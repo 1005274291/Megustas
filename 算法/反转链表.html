@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        /**
+ * Definition for singly-linked list.
+ * function ListNode(val) {
+ *     this.val = val;
+ *     this.next = null;
+ * }
+ */
+        /**
+         * @param {ListNode} head
+         * @return {ListNode}
+         */
+        var reverseList = function (head) {
+            if (head === undefined || head === null) return null
+            var originalHead = head//保存原头部
+            var reverseHead//反转后链表的头部
+            var reverse = function (head) {
+                if (head.next === null) {
+                    reverseHead = head//正向链表的最后一个头部是反转链表的开头
+                    return head
+                } else {
+                    var node = reverse(head.next)
+                    node.next = head//后一项的下一项是当前节点
+                    if (originalHead === head) {//如果反向遍历到原头部了，就证明是最后一项
+                        head.next = null//最后一项的下一项是null
+                        return reverseHead//返回反转链表的头部
+                    } else {
+                        return head
+                    }
+                }
+            }
+            return reverse(head)
+        };
+    </script>
+</body>
+
+</html>

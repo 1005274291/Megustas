@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="./js/jquery-3.3.1.min.js"></script>
+</head>
+<body>
+    <form action="/addcontact" method="post">
+        <h3>添加联系人</h3>
+        <div>
+            姓名： <input type="text" name="name">
+        </div>
+        <div>
+            手机号： <input type="text" name="phonenumber">
+        </div>
+        <div>
+            <input type="submit" value="提交">
+        </div>
+    </form>
+    <br>
+    <form action="/updatecontact" method="post">
+        <h3>修改联系人</h3>
+        <div>
+            id: <input type="text" name="_id">
+        </div>
+        <div>
+            姓名： <input type="text" name="name">
+        </div>
+        <div>
+            手机号： <input type="text" name="phonenumber">
+        </div>
+        <div>
+            <input type="submit" value="修改提交">
+        </div>
+    </form>
+    <script>
+        var getallcontact=function(){
+            $.get("/getallcontact",function(data){
+                console.log(data)
+            })
+        }
+        getallcontact()
+    </script>
+</body>
+</html>

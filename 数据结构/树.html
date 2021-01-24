@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var Tree = function () {
+            var Node = function (value) {
+                this.value = value
+                this.left = null
+                this.right = null
+            }
+            var root = null
+            var insertNode = function (node, newNode) {
+                if (newNode.value > node.value) {
+                    if (node.right == null) {
+                        node.right = newNode
+                    } else {
+                        insertNode(node.right, newNode)
+                    }
+                } else if (newNode.value < node.value) {
+                    if (node.left == null) {
+                        node.left = newNode
+                    } else {
+                        insertNode(node.left, newNode)
+                    }
+                }
+            }
+            //插入节点
+            this.insert = function (value) {
+                var newNode = new Node(value)
+                if (root == null) {
+                    root = newNode
+                } else {
+                    insertNode(root, newNode)
+                }
+            }
+            //搜索节点
+            this.search = function (value) {
+
+            }
+            //遍历节点
+            var traverse = function (node, callback) {
+                if (node == null) return
+                //callback(node.value)//前序遍历
+                traverse(node.left, callback)
+                //callback(node.value)//中序遍历
+                traverse(node.right, callback)
+                // callback(node.value)//后序遍历
+            }
+            this.traverse = function (callback) {
+                traverse(root, callback)
+            }
+            //获取最小节点
+            var min = function (node) {
+                if (node == null) return null
+                while (node && node.left) {
+                    node = node.left
+                }
+                return node
+            }
+            this.min = function () {
+                return min(root).value
+            }
+            //获取最大节点
+            var max = function (node) {
+                if (node == null) return null
+                while (node && node.right) {
+                    node = node.right
+                }
+                return node
+            }
+            this.max = function () {
+                return max(root).value
+            }
+            //删除节点
+            var remove = function (node, value) {
+                if (node == null) return null
+                if (value > node.value) {//构建新的右子树
+                    node.right = remove(node.right, value)
+                    return node
+                } else if (value < node.value) {//构建新的左子树
+                    node.left = remove(node.left, value)
+                    return node
+                } else {
+                    if (node.left == null && node.right == null) {//在叶子节点删除
+                        node = null
+                        return node
+                    }
+                    if (node.left == null && node.right) {//有一个子节点
+                        node = node.right
+                        return node
+                    } else if (node.left && node.right == null) {
+                        node = node.left
+                        return node
+                    }
+                    //有两个子节点
+                    var aux = min(node.right)
+                    node.value = aux.value
+                    node.right = remove(node.right, aux.value)
+                    return node
+                }
+            }
+            this.remove = function (key) {
+                root = remove(root,key)
+                console.log(root)
+            }
+            //获取跟节点
+            this.getRoot = function () {
+                return root
+            }
+        }
+        var t = new Tree()
+        t.insert(11)
+        t.insert(8)
+        t.insert(4)
+        t.insert(9)
+        t.insert(3)
+        t.insert(5)
+        t.insert(10)
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1>点我测试</h1>
+    <script>
+        //监听器兼容性问题
+        /**
+ * 修复事件对象不兼容的地方
+ */
+        function fixEventObj(e) {
+            e.target = e.target || e.srcElement;
+            e.preventDefault = e.preventDefault || function () {
+                e.returnValue = false;
+            };
+            e.stopPropagation = e.stopPropagation || function () {
+                e.cancelBubble = true;
+            };
+
+            return e;
+        }
+
+        /**
+         * 跨浏览器的绑定事件
+         */
+        function on(elem, type, handle) {
+            if (elem.addEventListener) { // 检测是否有标准方法
+                elem.addEventListener(type, handle, false);
+            } else if (elem.attachEvent) { // 试图使用 `attachEvent`
+                elem.attachEvent('on' + type, function (event) {
+                    event = fixEventObj(event);
+                    handle.call(elem, event); // 使用 call 来改变 handle 的作用域，使其指向 elem
+                });
+            } else { // 兜底
+                elem['on' + type] = function () {
+                    var event = fixEventObj(window.event);
+                    handle.call(elem, event);
+                }
+            }
+        }
+
+        // 调用
+        on(document.body, 'click', function (e) {
+            console.log('哈哈哈，好用！', e);
+        });
+        // 这种方式只能绑定一个 handle
+        // 当你试图绑定第二个时，就会覆盖上一个
+        // elem.onclick = function () { };
+
+        // 这种则可绑定任意个 handle
+        // 在多人开发的项目中，这个特点非常重要，不同的伙伴给同一个元素绑定事件的几率很大的
+        // elem.addEventListener(); // 这种就是 DOM2 级
+    </script>
+</body>
+
+</html>

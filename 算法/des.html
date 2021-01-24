@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://cdn.bootcss.com/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+    <script>
+        //DES加密
+        function encryptByDES(message, key) {
+            var keyHex = CryptoJS.enc.Utf8.parse(key);
+            var encrypted = CryptoJS.DES.encrypt(message, keyHex, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            return encrypted.ciphertext.toString();
+        }
+        //DES解密
+        function decryptByDES(ciphertext, key) {
+            var keyHex = CryptoJS.enc.Utf8.parse(key);
+            var decrypted = CryptoJS.DES.decrypt({
+                ciphertext: CryptoJS.enc.Hex.parse(ciphertext)
+            }, keyHex, {
+                mode: CryptoJS.mode.ECB,
+                padding: CryptoJS.pad.Pkcs7
+            });
+            var result_value = decrypted.toString(CryptoJS.enc.Utf8);
+            return result_value;
+        }
+        var message = 'Hello';//需要加密的数据
+        document.write("需要加密的数据是:"+message+"</br>")
+        var key = '12345678';//加密key
+        document.write("输入的密钥是："+key+"</br>")
+        //加密结果
+        desMessage = encryptByDES(message, key);
+        document.write("加密完的密文是："+desMessage+"</br>")
+        //解密结果
+        message = decryptByDES(desMessage, key)
+        document.write("解密完的明文是："+message+"</br>")
+    </script>
+</body>
+
+</html>

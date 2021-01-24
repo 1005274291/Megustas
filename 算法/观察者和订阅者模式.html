@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //发布订阅模式
+        class Pubsub{//事件调度中心
+            constructor(){
+                this.subscribers={}//订阅者的集合
+            }
+
+            subscribe(topic,callback){//订阅
+                let callbacks=this.subscribers[topic]
+                if(!callbacks){
+                    this.subscribers[topic]=[callback]
+                }else{
+                    callbacks.push(callback)
+                }
+            }
+            publish(topic,...args){//发布
+                let callbacks=this.subscribers[topic] ||[]
+                console.log(args)
+                callbacks.forEach(callback=>callback(...args))
+            }
+            getsubsubscribers(){
+                return this.subscribers
+            }
+        }
+        //创建事件调度中心，为订阅者和发布者提供调度服务
+        let pubSub=new Pubsub()
+        //A订阅了sms事件
+        pubSub.subscribe("sms",console.log)
+        //B订阅了sms事件
+        pubSub.subscribe("sms",console.log)
+        //C发布了sms事件
+        pubSub.publish("sms","I love","!")
+        //事件调度中心不在乎谁订阅的或者谁发布的
+    </script>
+    <script>
+        //观察者模式
+        class Subject{//目标
+            constructor(){
+                this.observers=[] //观察者的集合
+            }
+            add(observer){//添加观察者
+                this.observers.push(observer)
+            }
+            notify(...args){//通知观察者
+                this.observers.forEach(observer=>observer.update(...args))
+            }
+        }
+        class Observer{//观察者
+            update(...args){
+                console.log(...args)//观察者更新的回调函数
+            }
+        }
+        //创建观察者ob1
+        let ob1=new Observer()
+        //创建观察者ob2
+        let ob2=new Observer()
+        //创建目标sub
+        let sub=new Subject()
+        // 向目标添加观察者
+        sub.add(ob1)
+        sub.add(ob2)
+        //目标触发事件通知观察者
+        sub.notify("I miss","!")
+        //每个目标维护自己的观察者
+    </script>
+    <script>
+        //jq的自定义事件
+        $(document).on("topicPublish",function(){
+            //监听事件
+        })
+        $(document).trigger("topicPublish")//发布事件
+        $(document).off("topicPublish")//取消事件监听
+    </script>
+</body>
+</html>

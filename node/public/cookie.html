@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    首页
+    <form action="/pages" method="get">
+        <input type="text" value="" name="page">
+        <input type="submit" value="获取这个txt">
+    </form>
+    <form action="/login" method="POST">
+        <input type="text" name="username">
+        <input type="password" name="password">
+        <input type="submit" value="登录">
+    </form>
+    <script>
+        // var xhr = new XMLHttpRequest()
+        // xhr.open("POST", "/login", true)
+        // xhr.setRequestHeader("Content-Type", "text/json")
+        // xhr.send(JSON.stringify({ username: "111", password: "222" }))
+        // xhr.onreadystatechange = function () {
+        //     if (xhr.readyState == 4 && xhr.status == 200) {
+        //         console.log(xhr.response)
+        //     }
+        // }
+        function setCookie(cname, cvalue, exdays) {
+            var d = new Date();
+            d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+            var expires = "expires=" + d.toUTCString();
+            document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+        }
+        function getCookie(cname) {
+            var name = cname + "=";
+            var decodedCookie = decodeURIComponent(document.cookie);
+            var ca = decodedCookie.split(';');
+            for (var i = 0; i < ca.length; i++) {
+                var c = ca[i];
+                while (c.charAt(0) == ' ') {
+                    c = c.substring(1);
+                }
+                if (c.indexOf(name) == 0) {
+                    return c.substring(name.length, c.length);
+                }
+            }
+            return "";
+        } 
+        // Domin=ke.qq.com      在这个域下可以访问
+        //Expires=2018-09-05T12:32:07.203Z  过期时间
+        //Max-Age=36000        距离过期的秒数
+        //Path=/               只能在当前路径下访问
+        //Secure               只在https下才发送
+        //HttpOnly             不能通过JS的document.cookie访问
+    </script>
+</body>
+
+</html>

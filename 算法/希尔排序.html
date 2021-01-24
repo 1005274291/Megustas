@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        //时间平均复杂度为O(n的1.3次幂) 最坏O（n²） 最好O（n）
+        //空间复杂度O（1） 稳定性：不稳定
+        function xier(arr){
+            for(var gap=Math.floor(arr.length/2);gap>0;gap=Math.floor(gap/2)){
+                for(var i=gap;i<arr.length;i++){
+                    var j=i//把i保存下来
+                    var current=arr[i]//分组中的后一项
+                    while(j-gap>=0&&current<arr[j-gap]){
+                        arr[j]=arr[j-gap]//分组中前一项的值赋值给后一项
+                        j=j-gap//再向前查找
+                    }
+                    arr[j]=current//把当前项赋值给前一项
+                }
+            }
+            return arr
+        }
+        console.log(xier([2,5,7,9,6,3,1,10]))
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        var Set2 = function () {
+            var items = {}
+
+            //has 检查元素是否存在
+            this.has = function (value) {
+                return items.hasOwnProperty(value)
+            }
+            //add 添加元素，集合元素不重复
+            this.add = function (value) {
+                if (!this.has(value)) {
+                    items[value] = value
+                    return value
+                }
+                return false
+            }
+            //移除元素
+            this.remove = function (value) {
+                if (this.has(value)) {
+                    delete items[value]
+                    return true
+                }
+                else {
+                    return false
+                }
+            }
+
+            //清空集合
+            this.clear = function () {
+                items = {}
+            }
+            //集合大小
+            this.size = function () {
+                var count = 0
+                for (var i in items) {
+                    if (items.hasOwnProperty(i)) {
+                        count++
+                        console.log(i)
+                    }
+                }
+                return count
+                //ES6 return Object.keys(items).length
+            }
+            //遍历集合，将集合的全部元素以数组的形式返回
+            this.value=function(){
+                var values=[]
+                for(var i in items){
+                    if(items.hasOwnProperty(i)){
+                        values.push(items[i])
+                    }
+                }
+                return values
+            }
+            //并集
+            this.union=function(otherSet){
+                var resultSet=new Set2()
+                var arr=this.value()
+                for(var i=0;i<arr.length;i++){
+                    resultSet.add(arr[i])
+                }
+                arr=otherSet.value()
+                for(var i=0;i<arr.length;i++){
+                    resultSet.add(arr[i])
+                }
+                return resultSet
+            }
+            this.getItems = function () {
+                return items
+            }
+            //交集
+            this.intersection=function(otherSet){
+                var resultSet=new Set2()
+                var arr=this.value()
+                for(var i=0;i<arr.length;i++){
+                    if (otherSet.has(arr[i])) {
+                        resultSet.add(arr[i])
+                    }
+                }
+                return resultSet
+            }
+            //差集
+            this.difference=function(otherSet){
+                var resultSet=new Set2()
+                var arr=this.value()
+                for(var i=0;i<arr.length;i++){
+                    if (!otherSet.has(arr[i])) {
+                        resultSet.add(arr[i])
+                    }
+                }
+                return resultSet
+            }
+        }
+        var a=new Set2()
+        var b=new Set2()
+        a.add(1)
+        a.add(2)
+        a.add(3)
+        b.add(2)
+        b.add(3)
+        b.add(4)
+        var unionlist= a.union(b)
+        console.log(unionlist.value())
+        var intersectionlist=a.intersection(b)
+        console.log(intersectionlist.value())
+        var differencelist=a.difference(b)
+        console.log(differencelist.value())
+
+        //ES6集合
+        var s=new Set()
+        s.add(1)
+        s.add(2)
+        Array.from(s.keys())
+        var interator=s.entries()//获得迭代器
+        console.log(interator.next().value)
+
+        var c=new Set([1,2,3])
+        var d=new Set([2,3,4])
+        //并集
+        var unionlist1=new Set([...c,...d])
+        //交集
+        var intersect=new Set([...c].filter(x=>d.has(x)))//过滤器
+        //差集
+        var different=new Set([...c].filter(x=>!b.has(x)))
+        var d=new WeakSet()
+        d.add({"name":"xiaojun"})//弱集合只能传入对象  弱引用会被垃圾回收机制回收  键不进入引用  WeakMap也一样
+    </script>
+</body>
+
+</html>

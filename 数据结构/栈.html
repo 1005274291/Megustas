@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        var Stack=function(){
+            var items=[]//私有栈
+            this.push=function(e){//栈顶添加元素
+                items.push(e)
+            }
+            this.pop=function(e){//栈顶移除元素
+                return items.pop()
+            }
+            this.peek=function(){//检查栈顶元素
+                return items[items.length-1]
+            }
+            this.isEmpty=function(){//检查栈是否为空
+                return items.length==0
+            }
+            this.clear=function(){//清除栈
+                items=[]
+            }
+            this.size=function(){
+                return items.length//获取栈的大小
+            }
+            this.getItems=function(){//返回栈
+                return items
+            }
+        }
+
+        var tenbytwo=function(number){
+            var stack=new Stack()
+            var yushu
+            var string2=""
+            while(number>0){
+                yushu=number%2
+                stack.push(yushu)
+                number=Math.floor(number/2)//向下取整 Math.cell是向上取整 Math.round是四舍五入
+            }
+            while(!stack.isEmpty()){
+                string2+=stack.pop()
+            }
+            return string2
+        }
+        var i=0
+        var app=function(n){//递归是自己调用自己
+            if(i<n){
+                i++
+                app(n)
+            }else{
+                console.log(i)
+                return i
+            }
+        }
+    </script>
+</body>
+</html>

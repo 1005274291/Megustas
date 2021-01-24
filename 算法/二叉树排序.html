@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <script>
+        function TreeCode() {
+            let BiTree = function (ele) {
+                this.data = ele;
+                this.lChild = null;
+                this.rChild = null;
+            }
+
+            this.createTree = function () {
+                let biTree = new BiTree('A');
+                biTree.lChild = new BiTree('B');
+                biTree.rChild = new BiTree('C');
+                biTree.lChild.lChild = new BiTree('D');
+                biTree.lChild.lChild.lChild = new BiTree('G');
+                biTree.lChild.lChild.rChild = new BiTree('H');
+                biTree.rChild.lChild = new BiTree('E');
+                biTree.rChild.rChild = new BiTree('F');
+                biTree.rChild.lChild.rChild = new BiTree('I');
+                return biTree;
+            }
+        }
+
+        //前序遍历
+        function ProOrderTraverse(biTree) {
+            if (biTree == null) return;
+            console.log(biTree.data);
+            ProOrderTraverse(biTree.lChild);
+            ProOrderTraverse(biTree.rChild);
+        }
+
+        //中序遍历
+        function InOrderTraverse(biTree) {
+            if (biTree == null) return;
+            InOrderTraverse(biTree.lChild);
+            console.log(biTree.data);
+            InOrderTraverse(biTree.rChild);
+        }
+
+        //后续遍历
+        function PostOrderTraverse(biTree) {
+            if (biTree == null) return;
+            PostOrderTraverse(biTree.lChild);
+            PostOrderTraverse(biTree.rChild);
+            console.log(biTree.data);
+        }
+
+        let myTree = new TreeCode();
+        console.log(myTree.createTree());
+        console.log('前序遍历')
+        ProOrderTraverse(myTree.createTree());
+        console.log('中序遍历')
+        InOrderTraverse(myTree.createTree());
+        console.log('后续遍历')
+        PostOrderTraverse(myTree.createTree());
+
+        //二叉树排序
+        // function Node(data, left, right) {
+        //     this.data = data;
+        //     this.left = left;
+        //     this.right = right;
+        //     this.show = show;
+        // }
+        // function show() {
+        //     return this.data;
+        // }
+
+        // function insert(data) {
+        //     var n = new Node(data, null, null);
+        //     if (this.root == null) {
+        //         this.root = n;
+        //     }
+        //     else {
+        //         var current = this.root;
+        //         var parent;
+        //         while (true) {
+        //             parent = current;
+        //             if (data < current.data) {
+        //                 current = current.left;
+        //                 if (current == null) {
+        //                     parent.left = n;
+        //                     break;
+        //                 }
+        //             }
+        //             else {
+        //                 current = current.right;
+        //                 if (current == null) {
+        //                     parent.right = n;
+        //                     break;
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
+        // function inOrder(node) {
+        //     if (!(node == null)) {
+        //         inOrder(node.left);
+        //         console.log(node.show() + " ");
+        //         inOrder(node.right);
+        //     }
+        // }
+
+        // // 给BST类添加该成员方法
+        // function BST() {
+        //     this.root = null;
+        //     this.insert = insert;
+        //     this.inOrder = inOrder;
+        // }
+        // var bst=new BST()
+        // var nums=[1,5,9,8,22,11]
+        // for(var i=0;i<nums.length;i++){
+        //     bst.insert(nums[i])
+        // }
+        // bst.inOrder(bst.root)
+
+        //层序遍历
+        // 从上往下打印出二叉树的每个节点，同层节点从左至右打印
+
+        //给定节点结构
+
+        /* function TreeNode(x) {
+            this.val = x;
+            this.left = null;
+            this.right = null;
+        } */
+
+        //传入二叉树头结点
+        // function PrintFromTopToBottom(root) {
+        //     if (!root) return false;//如果头结点为空、返回假
+        //     var result = []; //创建一个数组存放结果
+        //     var tree = []; //创建一个数组存放二叉树
+        //     tree.push(root); //先传入头结点
+
+        //     // 当tree数组长度不为空
+        //     while (tree.length) {
+        //         var node = tree.shift();    // 将数组第一个结点放到node中                                                                                                                                                                                                                                                                                                                                          
+        //         result.push(node.val); //将node结点的值压入result数组中
+        //         //如果node结点左子树不为空
+        //         if (node.left) {
+        //             tree.push(node.left); // 将node结点的左子树结点的值压入tree数组中
+        //         }
+
+        //         //如果node结点又子树不为空
+        //         if (node.right) {
+        //             tree.push(node.right); //将node结点的右子树结点的值压入tree数组中
+        //         }
+        //     }
+        //     return result; //返回result数组
+        // }
+
+    </script>
+</body>
+
+</html>

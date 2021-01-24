@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #root {
+            width: 0;
+            height: 0;
+            border-width: 20px;
+            border-style: solid;
+            border-color: transparent transparent red transparent;
+            /* visibility: hidden; */
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script>
+        var d = document.getElementById("root")
+        d.oncontextmenu = () => false  //禁止使用右键
+        //函数柯里化
+        //柯里化，英语：Currying(果然是满满的英译中的既视感)，是把接受多个参数的函数变换成接受一个单一参数（最初函数的第一个参数）的函数，并且返回接受余下的参数和返回结果的新函数的技术。
+        // 支持多参数传递
+        function progressCurrying(fn,...args) {
+
+            var _this = this
+            var len = fn.length;
+            var args = args || [];
+
+            return function () {
+                var _args = Array.prototype.slice.call(arguments);
+                if(Array.isArray(args)){
+                    Array.prototype.push.apply(args, _args);
+                }else{
+                    args=[args]
+                    Array.prototype.push.apply(args, _args);
+                }
+                // 如果参数个数小于最初的fn.length，则递归调用，继续收集参数
+                if (args.length < len) {
+                    return progressCurrying.call(_this, fn, args);
+                }
+
+                // 参数收集完毕，则执行fn
+                console.log(args)
+                return fn.apply(_this, args);
+            }
+        }
+        console.log(progressCurrying((a, b) => a + b, [2, 3]))
+        function add() {
+            // 第一次执行时，定义一个数组专门用来存储所有的参数
+            console.log(arguments)
+            var _args = Array.prototype.slice.call(arguments);
+
+
+            // 在内部声明一个函数，利用闭包的特性保存_args并收集所有的参数值
+            var _adder = function () {
+                _args.push(...arguments);
+                return _adder;
+            };
+
+            // 利用toString隐式转换的特性，当最后执行时隐式转换，并计算最终的值返回
+            _adder.toString = function () {
+                return _args.reduce(function (a, b) {
+                    return a + b;
+                });
+            }
+            return _adder;
+        }
+        console.log(
+            add(1)(2)(3).toString(),                // 6
+            add(1, 2, 3)(4).toString(),             // 10
+            add(1)(2)(3)(4)(5).toString(),          // 15
+            add(2, 6)(1).toString())                // 9
+        function addX(y) {
+            return function (x) {
+                return x + y
+            }
+        }
+    </script>
+    <script>
+        //函数组合
+        //定义compose
+        var compose = (...args) => x => args.reduce((value, item) => item(value), x);
+
+        var toUpperCase = function (x) { return x.toUpperCase(); };
+        var exclaim = function (x) { return x.toLowerCase(); };
+
+        var shout = compose(exclaim, toUpperCase);
+
+        console.log(shout("Send in the clowns"))
+//=> "SEND IN THE CLOWNS!"
+    </script>
+</body>
+
+</html>
