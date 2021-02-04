@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+
+  <body>
+    <script>
+        //翻转链表
+      /**
+       * Definition for singly-linked list.
+       * function ListNode(val) {
+       *     this.val = val;
+       *     this.next = null;
+       * }
+       */
+      /**
+       * @param {ListNode} head
+       * @return {ListNode}
+       */
+
+      //反转链表
+      var reverseList = function (head) {
+        let pre = null;
+        let cur = head;
+        while (cur !== null) {
+          let next = cur.next;//保存链表头的下一个节点
+          cur.next = pre;
+          pre = cur;
+          cur = next;
+        }
+        return pre;
+      };
+
+      //获取中间节点
+      let middleNode=function(head){
+        let fast =head,slow=head
+        while(fast&&fast.next&&fast.next.next){
+            slow=slow.next;
+            fast=fast.next.next;
+        }
+        return slow;
+    }
+    </script>
+  </body>
+</html>
